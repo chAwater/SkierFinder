@@ -1,0 +1,12 @@
+* 2019.04.02
+    - Add images
+    - Rephrasing
+    - Creat .gitignore
+    - Creat log
+    - Add link
+    - Get some imgs into `SnapData` (ignore)
+    - Look at Mask R-CNN, try to deploy it
+* 2019.04.01
+    - Creat repo
+    - Creat README.md
+    - Commit `intro.`, `Outline`
