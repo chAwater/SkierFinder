@@ -31,8 +31,8 @@
         - Update: 2019.04.02 抓包失败了 by @MingxuanHu
 1. 在大量照片中找出每张照片中的每个滑雪者
     - 物体识别（Object Detection）和 图像分割（Image Segmentation）
-        - 模型：Mask R-CNN、YOLO
-        - 数据库：COCO
+        - 模型：[Mask R-CNN](https://github.com/matterport/Mask_RCNN)、[YOLO](https://pjreddie.com/darknet/yolo/)
+        - 数据库：[COCO](http://cocodataset.org/#home)
         - **优点**：模型比较成熟
         - **缺点**：我不太熟悉，尝试后可以上手
 2. 提取每个滑雪者的特征，建立数据库
@@ -64,6 +64,24 @@
     - 边学边玩、纯玩、烂尾（这个靠谱）
 
 ## 上手
+
+### 获取滑雪照片
+
+Folder: `from_fenxuekeji`
+
+- 利用找到的API尝试get照片 [`01.test_get_img.ipynb`](./from_fenxuekeji/01.test_get_img.ipynb)
+
+### 在照片中找出每个滑雪者
+
+- 配置 Mask R-CNN 运行环境 [`setup_MaskRCNN.sh`](./utils/setup_MaskRCNN.sh)
+- 测试 Mask R-CNN [`demo.ipynb`](https://github.com/matterport/Mask_RCNN/blob/master/samples/demo.ipynb)
+- 在单反相机照片和用API手动get的照片上测试 Mask R-CNN `demo.ipynb`
+
+### 提取每个滑雪者的特征
+
+### 根据上传的照片进行匹配
+
+### 结果评估
 
 
 
