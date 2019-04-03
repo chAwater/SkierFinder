@@ -32,16 +32,17 @@ page = 1
 
 
 # 雪场列表
-params1 = {'able_type': 'ski_ranch', 'lat': 39.97696126302083, 'lng': 116.4195960828993, 'page': page}
+# params1 = {'able_type': 'ski_ranch', 'lat': 39.97696126302083, 'lng': 116.4195960828993, 'page': page}
+params1 = {'able_type': 'ski_ranch', 'lat': 40.96534722000000, 'lng': 115.3931194000000, 'page': page}
 data1 = requests.get(__api_snow_pack_list, params1)
 ski_ranch_list = data1.json()['data']['photo_walls']
 
 
-# In[4]:
+# In[6]:
 
 
 # 确认雪场
-ski_ranch_list[0]['name']
+ski_ranch_list[2]['name']
 
 
 # In[5]:
@@ -91,7 +92,7 @@ image
 # In[ ]:
 
 
-
+print (img_url)
 
 
 # In[ ]:
