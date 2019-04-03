@@ -1,2 +1,4 @@
 .DS_Store
 *.ai
+SnapData/*
+*/.ipynb_checkpoints/*
