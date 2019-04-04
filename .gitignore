@@ -1,4 +1,6 @@
 .DS_Store
 *.ai
+*.pkl
+*.csv
 SnapData/*
 */.ipynb_checkpoints/*

@@ -71,7 +71,7 @@ Folder: `from_fenxuekeji`
 
 - 利用找到的API尝试get照片 [`01.Test_API_get_img.py`](./from_fenxuekeji/01.Test_API_get_img.py)
 - 获取一定量的照片URL [`02.Scraping_urls.py`](./from_fenxuekeji/02.Scraping_urls.py)
-- 下载照片
+- 下载照片 [`download_urls.sh`](./utils/download_urls.sh)
 
 ### 在照片中找出每个滑雪者
 
@@ -99,7 +99,7 @@ Folder: `from_fenxuekeji`
 
 ```python
 class InferenceConfig(coco.CocoConfig):
-    # To reduce memory usage when running on MacbookPro
+    # To reduce memory usage when running on MacBookPro
     MAX_GT_INSTANCES = 20
     IMAGE_MAX_DIM = 512
     IMAGE_MIN_DIM = 512
@@ -107,7 +107,7 @@ class InferenceConfig(coco.CocoConfig):
 # Load image
 # image = skimage.io.imread('./SnapData/SingleTarget/ST_01.png')
 # image = skimage.io.imread('./SnapData/SingleTarget/ST_02.png')
-# To reduce memory usage when running on MacbookPro
+# To reduce memory usage when running on MacBookPro
 from PIL import Image
 image = np.array( Image.open('./SnapData/SingleTarget/ST_01.png').resize((960,540), Image.ANTIALIAS) )
 # image = np.array( Image.open('./SnapData/SingleTarget/ST_02.png').resize((960,540), Image.ANTIALIAS) )

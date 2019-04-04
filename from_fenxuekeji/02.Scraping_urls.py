@@ -67,7 +67,7 @@ for page_idx in np.arange(2,total_pages):
 
 # Save urls
 urls = urls.reset_index()[0]
-urls.to_pickle('pw_20190331_wl_n1.pkl')
+urls.to_csv('pw_20190331_wl_n1.csv')
 
 
 # In[6]:

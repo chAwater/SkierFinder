@@ -2,6 +2,7 @@
     - Setup Mask_RCNN
     - Test Mask_RCNN on demo and real data
     - Get URLs for images
+    - Start Download images
 * 2019.04.03
     - Test API to get image
     - Meet with @MingxuanHu, tell him about API
