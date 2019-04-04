@@ -38,11 +38,11 @@ data1 = requests.get(__api_snow_pack_list, params1)
 ski_ranch_list = data1.json()['data']['photo_walls']
 
 
-# In[6]:
+# In[4]:
 
 
 # 确认雪场
-ski_ranch_list[2]['name']
+ski_ranch_list[0]['name']
 
 
 # In[5]:
@@ -89,7 +89,7 @@ image = Image.open(BytesIO(requests.get(img_url).content))
 image
 
 
-# In[ ]:
+# In[10]:
 
 
 print (img_url)
