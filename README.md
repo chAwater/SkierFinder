@@ -75,7 +75,51 @@ Folder: `from_fenxuekeji`
 
 - 配置 Mask R-CNN 运行环境 [`setup_MaskRCNN.sh`](./utils/setup_MaskRCNN.sh)
 - 测试 Mask R-CNN [`demo.ipynb`](https://github.com/matterport/Mask_RCNN/blob/master/samples/demo.ipynb)
-- 在单反相机照片和用API手动get的照片上测试 Mask R-CNN `demo.ipynb`
+- 在单反相机照片和用API手动get的照片上测试 Mask R-CNN ( based on `demo.ipynb` )
+
+效果比想象中的好（模型能够准确识别出雪板！有些照片单板双板直接可以区分！（`skis` / `snowboard`））：
+
+```python
+class InferenceConfig(coco.CocoConfig):
+    # To reduce memory usage when running on MacbookPro
+    MAX_GT_INSTANCES = 20
+    IMAGE_MAX_DIM = 512
+    IMAGE_MIN_DIM = 512
+
+# Load image
+# image = skimage.io.imread('./SnapData/SingleTarget/ST_01.png')
+# image = skimage.io.imread('./SnapData/SingleTarget/ST_02.png')
+# To reduce memory usage when running on MacbookPro
+from PIL import Image
+image = np.array( Image.open('./SnapData/SingleTarget/ST_01.png').resize((960,540), Image.ANTIALIAS) )
+# image = np.array( Image.open('./SnapData/SingleTarget/ST_02.png').resize((960,540), Image.ANTIALIAS) )
+
+# Run detection
+results = model.detect([image], verbose=1)
+
+# Visualize results
+r = results[0]
+visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
+                            class_names, r['scores'])
+```
+
+<!-- ![](./imgs/ST_01_out.png) ![](./imgs/ST_02_out.png) -->
+<html>
+    <table style="margin-left: auto; margin-right: auto;" align="center">
+        <tr>
+            <th>ST_01</th>
+            <th>ST_02</th>
+        </tr>
+            <td>
+                <img src="./imgs/ST_01_out.png" width="400"/>
+            </td>
+            <td>
+                <img src="./imgs/ST_02_out.png" width="400"/>
+            </td>
+        </tr>
+    </table>
+</html>
+
 
 ### 提取每个滑雪者的特征
 
