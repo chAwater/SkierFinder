@@ -69,7 +69,9 @@
 
 Folder: `from_fenxuekeji`
 
-- 利用找到的API尝试get照片 [`01.test_get_img.ipynb`](./from_fenxuekeji/01.test_get_img.ipynb)
+- 利用找到的API尝试get照片 [`01.Test_API_get_img.py`](./from_fenxuekeji/01.Test_API_get_img.py)
+- 获取一定量的照片URL [`02.Scraping_urls.py`](./from_fenxuekeji/02.Scraping_urls.py)
+- 下载照片
 
 ### 在照片中找出每个滑雪者
 
@@ -119,13 +121,19 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
                             class_names, r['scores'])
 ```
 
-
 ### 提取每个滑雪者的特征
 
 ### 根据上传的照片进行匹配
 
 ### 结果评估
 
+
+##### Version
+
+|    Obj     | Version | Note |
+|    :-:     |   :-:   |  :-: |
+|   滑呗 APP  | v3.4.1  | iOS |
+| Mask R-CNN |  v2.1   |  -  |
 
 
 <!-- EOF -->
