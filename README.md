@@ -129,7 +129,10 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
 
 - 从 Mask R-CNN 的模型输出提取
     1. 保存每个照片每个对象的 box, mask, class, scores 为 DataFrame
-    2. 分析所有图片的结果
+        - 一个显卡（Titan X）约30分钟就处理完了4000张照片
+        - 调整`batch_size`实现更高效的图片处理（#TODO）
+        - 更大量的图片处理（#TODO）
+    2. 初步分析所有图片的结果
 
 
 ### 根据上传的照片进行匹配
