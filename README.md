@@ -77,7 +77,7 @@
     - 降维、聚类
     - 卷积神经网络分类
     - 运用其他模型
-        - 姿态识别
+        - 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
         - DeepFashion: [中文介绍](https://www.jianshu.com/p/3fceb8d84a2d)
 - [ ] 下一步计划中...
 
@@ -101,15 +101,12 @@ Folder: `from_fenxuekeji`
 <html>
     <table style="margin-left: auto; margin-right: auto;" align="center">
         <tr>
-            <th>ST_01 （相机照片，模型未检测到雪板）</th>
-            <th>ST_02 （相机照片，模型检测到雪板）</th>
+            <th> ST_01 （相机照片，模型未检测到雪板）</th>
+            <th> ST_02 （相机照片，模型检测到雪板）  </th>
         </tr>
-            <td>
-                <img src="./imgs/ST_01_out.png" width="400"/>
-            </td>
-            <td>
-                <img src="./imgs/ST_02_out.png" width="400"/>
-            </td>
+        <tr>
+            <td> <img src="./imgs/ST_01_out.png" width="400"/> </td>
+            <td> <img src="./imgs/ST_02_out.png" width="400"/> </td>
         </tr>
     </table>
 </html>
@@ -141,11 +138,86 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
 ### 提取每个滑雪者的特征
 
 - 从 Mask R-CNN 的模型输出提取
-    1. 保存每个照片每个对象的 box, mask, class, scores 为 DataFrame
+    1. 保存每个照片每个对象的 box, mask, class, scores 为 [**DataFrame**](#DataFrame)
         - 一个显卡（Titan X）约30分钟就处理完了4000张照片
         - 调整`batch_size`实现更高效的图片处理（#TODO）
         - 更大量的图片处理（#TODO）
-    2. 初步分析所有图片的结果
+    2. [**初步分析**](#初步分析)所有图片的结果
+        - Score 分布
+        - Box 数量分布
+            - RawData:   Mean=4.0, Median=3
+            - CleanData: Mean=2.5, Median=2
+        - Class 数量分布
+        - BoxSize 分布
+    3. 保留有意义的信息 CleanData
+        - Score > 0.9
+        - Class in ['person', 'skis', 'snowboard']
+        - BoxSize > 1% ImageSize
+
+
+#### DataFrame
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>class</th>
+      <th>scores</th>
+      <th>rois</th>
+      <th>box_size</th>
+      <th>masks</th>
+      <th>imgID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>person</td>
+      <td>0.999791</td>
+      <td>[244, 614, 400, 684]</td>
+      <td>3.340471</td>
+      <td>[False, False, False, False, False, False, ...</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>person</td>
+      <td>0.999780</td>
+      <td>[211, 299, 344, 432]</td>
+      <td>5.411135</td>
+      <td>[False, False, False, False, False, False, ...</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>snowboard</td>
+      <td>0.991058</td>
+      <td>[320, 268, 365, 417]</td>
+      <td>2.051086</td>
+      <td>[False, False, False, False, False, False, ...</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>skis</td>
+      <td>0.944588</td>
+      <td>[384, 622, 404, 686]</td>
+      <td>0.391557</td>
+      <td>[False, False, False, False, False, False, ...</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>person</td>
+      <td>0.900126</td>
+      <td>[221, 138, 249, 156]</td>
+      <td>0.154176</td>
+      <td>[False, False, False, False, False, False, ...</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+#### 初步分析
 
 
 ### 根据上传的照片进行匹配
