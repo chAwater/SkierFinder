@@ -149,13 +149,15 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
             - CleanData: Mean=2.5, Median=2
         - Class 数量分布
         - BoxSize 分布
-    3. 保留有意义的信息 CleanData
+    3. 保留有意义的信息 **CleanData**
         - Score > 0.9
         - Class in ['person', 'skis', 'snowboard']
         - BoxSize > 1% ImageSize
+        - 使用上面的参数删掉了 ~50% 的 Box
 
 
 #### DataFrame
+
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -218,6 +220,8 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
 </table>
 
 #### 初步分析
+
+![](./imgs/DA.png)
 
 
 ### 根据上传的照片进行匹配
