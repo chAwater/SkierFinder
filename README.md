@@ -68,6 +68,19 @@
 
 ## 上手
 
+### TODO
+- [x] [爬虫](#获取滑雪照片)
+- [ ] 使用 Mask R-CNN 提取特征
+    - 海量照片高效提取
+- [ ] 特征分析
+    - 基本分析
+    - 降维、聚类
+    - 卷积神经网络分类
+    - 运用其他模型
+        - 姿态识别
+        - DeepFashion: [中文介绍](https://www.jianshu.com/p/3fceb8d84a2d)
+- [ ] 下一步计划中...
+
 ### 获取滑雪照片
 
 Folder: `from_fenxuekeji`
@@ -142,10 +155,11 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
 
 ##### Version
 
-|    Obj     | Version | Note |
-|    :-:     |   :-:   |  :-: |
-|   滑呗 APP  | v3.4.1  | iOS |
-| Mask R-CNN |  v2.1   |  -  |
-
+|    Obj     | Version |  Note  |
+|    :-:     |   :-:   |   :-:  |
+|   滑呗 APP  | v3.4.1  |   iOS  |
+| Mask R-CNN |  v2.1   |    -   |
+|   Python   |   3.7   |   3.5  |
+|   Pandas   |  v0.24  |  v0.23 |
 
 <!-- EOF -->
