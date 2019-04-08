@@ -153,9 +153,10 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
 - 从 Mask R-CNN 的模型输出提取信息
     1. 保存每个照片每个对象的 box, mask, class, scores 为 [**DataFrame**](#DataFrame)
         - 一个显卡（Titan X）约30分钟就处理完了4000张照片
+        - 原始结果保存成 .pkl 文件大小约 6G
+        - 高效结果存储（#TODO）
         - 调整`batch_size`实现更高效的图片处理（#TODO）
         - 更大量的图片处理（#TODO）
-        - 高效结果存储（#TODO）
     2. [**初步分析**](#初步分析)所有图片的结果
         - Score 分布
         - Box 数量分布
@@ -166,9 +167,14 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
     3. 保留有意义的信息 **CleanData**
         - Score > 0.9
         - Class in ['person', 'skis', 'snowboard']
-        - BoxSize > 1% ImageSize
+        - Person's BoxSize > 1% ImageSize （删掉非被摄主体，“抢镜头”的人很多很多）
         - 使用上面的参数删掉了 ~50% 的 Box
+        - CleanData保存成 .pkl 文件大小约 3G
 - 用提取的信息构建数据库 **#TAG-HEAD**
+    - 数据库设计
+        - 设计数据库结构
+        - 如何验证？
+        - 如何快速可视化结果？
     - 特征工程
         - 不同颜色像素的比例
     - 卷积神经网络
