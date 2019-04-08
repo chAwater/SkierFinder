@@ -3,7 +3,8 @@
         - Pandas v0.23 -> v0.24
     - @MingxuanHu sent me his scraping results (more than 6G...)
     - Update imgs
-    - Analysis Mask_RCNN outputs 
+    - Analysis Mask_RCNN outputs
+    - Add and Update TODO, Add TAG-HEAD
 * 2019.04.04
     - Setup Mask_RCNN
     - Test Mask_RCNN on demo and real data
