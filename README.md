@@ -159,15 +159,17 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
         - 更大量的图片处理（#TODO）
     2. [**初步分析**](#初步分析)所有图片的结果
         - Score 分布
-        - Box 数量分布
-            - RawData:   Mean=4.0, Median=3
-            - CleanData: Mean=2.5, Median=2
+        - 每个照片的 Box 数量分布
+            - RawData:   Median=3
+            - CleanData: Median=2
         - Class 数量分布
         - BoxSize 分布
     3. 保留有意义的信息 **CleanData**
-        - Score > 0.8
         - Class in ['person', 'skis', 'snowboard']
-        - Person's BoxSize > 1% ImageSize （删掉非被摄主体，“抢镜头”的人很多很多）
+        - Score > 0.7
+        - Person's Score > 0.9
+        - Person's BoxSize > 1% ImageSize
+        （删掉非被摄主体，“抢镜头”的人很多很多）
         - 使用上面的参数删掉了 ~40% 的 Box
         - CleanData保存成 .pkl 文件大小约 3G，保留 ~10k 个 Box
 - 用提取的信息构建数据库 **#TAG-HEAD**
@@ -251,7 +253,7 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
 
 #### 初步分析
 
-![](./imgs/DA.png)
+![](./imgs/Mask_RCNN_result_analysis.png)
 
 
 ### 根据上传的照片进行匹配

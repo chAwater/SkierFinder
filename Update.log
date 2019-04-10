@@ -1,5 +1,8 @@
 * 2019.04.10
     - Change cutoff
+    - Add scores violinplot
+    - Add InBox Pixels Heatmap
+    - Upload analysis code
 * 2019.04.09
     - Update image for result analysis
     - Messed up masks shape ...
