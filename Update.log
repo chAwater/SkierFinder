@@ -1,5 +1,9 @@
+* 2019.04.10
+    - Change cutoff
 * 2019.04.09
     - Update image for result analysis
+    - Messed up masks shape ...
+    - Re-run Mask_RCNN
 * 2019.04.08
     - Save Mask_RCNN outputs for image datasets (`pw_20190331_wl_n1`)
         - Pandas v0.23 -> v0.24
