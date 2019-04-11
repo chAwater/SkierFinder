@@ -4,7 +4,7 @@
 
 2019年3月31日，和 @MingxuanHu 一起在崇礼万龙滑雪场滑雪，他第一次使用“滑呗”APP记录滑雪数据。下午坐大巴车返京途中，我们看到有同行的雪友在微信分享自己的滑雪照片。
 
-这些滑雪照片来自于“滑呗”APP的“照片墙”页面，实际上是摄影爱好者或雪场摄影师将自己的作品上传到“滑呗”APP的。广大雪友根据自己的所在**雪场**、**是否观察到有摄影师拍摄自己的滑行**、被拍摄的大概**时间**，来找到自己的照片（当然，也可以下载其他雪友照片和风景照片，不在本文讨论范围）。“滑呗”APP提供的照片带有大量水印，若想下载无水印、高清、超清照片，需支付一定（约5元、15元、25元）的费用，“滑呗”APP和摄影师 3:7 分成。由于雪友属于社交性质较强的的社群，且消费水平普遍较高，这个产品不仅可以产生广告效应进而扩大用户群，也可以为“滑呗”APP带来一定的收益，还能创造其他潜在的商业价值（雪场广告效应、雪场流量数据、用户浏览数据等）。
+这些滑雪照片来自于“滑呗”APP的“照片墙”页面，实际上是摄影爱好者或雪场摄影师将自己的作品上传到“滑呗”APP的。广大雪友根据自己的所在**雪场**、**是否观察到有摄影师拍摄自己的滑行**、被拍摄的**大概时间**，来找到自己的照片（当然，也可以下载其他雪友照片和风景照片，不在本文讨论范围）。“滑呗”APP提供的照片带有大量水印，若想下载无水印、高清、超清照片，需支付一定（约5元、15元、25元）的费用，“滑呗”APP和摄影师 3:7 分成。由于雪友属于社交性质较强的的社群，且消费水平普遍较高，这个产品不仅可以产生广告效应进而扩大用户群，也可以为“滑呗”APP带来一定的收益，还能创造其他潜在的商业价值（雪场广告效应、雪场流量数据、用户浏览数据等）。
 
 ![](./imgs/img1.png)
 
@@ -20,7 +20,7 @@
 3. 用户上传一张自己的照片，提取特征后与数据库进行匹配；
 4. 返回匹配度高的照片给滑雪者挑选。
 
-我们的想法是利用最先进的（state-of-art）、基于人工智能的图像识别技术，帮助我们高效、准确的完成这个“**寻找 -> 提取 -> 匹配**”的过程。
+我们的想法是利用最先进的（State-of-art）、基于人工智能的图像识别技术，帮助我们高效、准确的完成这个“**寻找 -> 提取 -> 匹配**”的过程。
 
 （在我当前微薄的知识储备下认为）其中可能涉及到的技术、人工智能算法、模型和结果主要有：
 
@@ -34,7 +34,7 @@
     - 物体识别（Object Detection）和 图像分割（Image Segmentation）
         - 模型：[Mask R-CNN](https://github.com/matterport/Mask_RCNN)、[YOLO](https://pjreddie.com/darknet/yolo/)
         - 数据库：[COCO](http://cocodataset.org/#home)
-        - **优点**：模型比较成熟
+        - **优点**：模型高度成熟
         - **缺点**：我不太熟悉，尝试后可以上手
 2. 提取每个滑雪者的特征，建立数据库
     - 特征工程
@@ -45,20 +45,21 @@
         - 区分单板/双板
         - 区分男女
         - **优点**：简单，我现在可以上手
-        - **缺点**：依赖人工标注，功能有限
+        - **缺点**：依赖人工标注，工作量大，功能有限
     - 非监督学习、降维、聚类
         - Autoencoder
         - PCA & tSNE
-        - **优点**：我现在可以上手
+        - **优点**：简单，我现在可以上手
         - **缺点**：效率低，每次新加入数据，就需要重新跑一遍
     - 姿态识别（Pose Estimation）
         - 根据姿势区分雪服/雪裤
         - 根据姿势区分单板/双板
-        - **优点**：模型相对成熟
+        - **优点**：模型比较成熟，提取额外特征
         - **缺点**：我完全不了解
 3. 用户上传一张自己的照片，提取特征后与数据库进行匹配
     - 与 2 类似，但有区别
         - 摄影角度差别很大
+        - 用户完整度有差别，（相比于滑行中）头、脸、腿信息可能不完整
 4. 返回匹配度高的照片给滑雪者挑选
     - 容忍假阳性
     - 抗拒假阴性
@@ -72,23 +73,31 @@
 ## 上手
 
 ### TODO
+
 #### 数据获取
 - [x] [爬虫](#获取滑雪照片)
+    - [ ] 如何获得 API
+- [ ] 其他渠道获取照片
+
 #### 特征提取
 - [x] [使用 Mask R-CNN 提取特征](#提取每个滑雪者的特征)
-- [ ] 海量照片高效提取
-- [ ] 高效结果存储
+    - [ ] 海量照片高效提取
+    - [ ] 高效结果存储
+    - [x] 结果可视化重现
+
 #### 特征分析
 - [x] [基本分析](#初步分析)
 - [ ] 降维、聚类
 - [ ] 卷积神经网络分类
 - [ ] 运用其他模型
-    - 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
-    - DeepFashion: [中文介绍](https://www.jianshu.com/p/3fceb8d84a2d)
+    - [ ] 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
+    - [ ] DeepFashion: [中文介绍](https://www.jianshu.com/p/3fceb8d84a2d)
+    - [ ] etc.
+
 #### NEXT
 - [ ] TAD-HEAD
-- [ ] 下一步计划中......
 - [ ] 尝试布置计划到[看板](https://github.com/chAwater/SkierFinder/projects)
+- [ ] 下一步计划中......
 
 ---
 
@@ -99,15 +108,20 @@ Folder: `from_fenxuekeji`
 - 利用找到的API尝试get照片 [`01.Test_API_get_img.py`](./from_fenxuekeji/01.Test_API_get_img.py)
 - 获取一定量的照片URL [`02.Scraping_urls.py`](./from_fenxuekeji/02.Scraping_urls.py)
 - 下载照片 [`download_urls.sh`](./utils/download_urls.sh)
-    - @MingxuanHu 写的 Java 脚本暴力爬，竟然没被ban（上家技术还需要提高）
+    - @MingxuanHu 写的 Java 脚本暴力爬，竟然没被ban
+    （上家技术还需要提高）
+    - 担心 API 发生变化，影响与公司合作前的时间窗口
+    （不能过分依靠好运气得到的API）
 
 ### 在照片中找出每个滑雪者
 
 - 配置 Mask R-CNN 运行环境 [`setup_MaskRCNN.sh`](./utils/setup_MaskRCNN.sh)
+    - 除 [imgaug](https://github.com/aleju/imgaug), [pycocotools](https://github.com/cocodataset/cocoapi) 以外，其他为常用包（来自于不做CV的无知）
 - 测试 Mask R-CNN [`demo.ipynb`](https://github.com/matterport/Mask_RCNN/blob/master/samples/demo.ipynb)
 - 在单反相机照片和用API手动get的照片上测试 Mask R-CNN ( based on `demo.ipynb` )
-
-效果比想象中的好（模型能够准确识别出雪板！有些照片单板双板直接可以区分！（`skis` / `snowboard`））：
+    - 效果比想象中的好！
+    - 模型能够准确识别出雪板！
+    - 有些照片单板双板直接可以区分！（`skis` / `snowboard`）
 
 <html>
     <table style="margin-left: auto; margin-right: auto;" align="center">
@@ -130,22 +144,16 @@ class InferenceConfig(coco.CocoConfig):
     IMAGE_MIN_DIM = 512
 
 # Load image
-# image = skimage.io.imread('./SnapData/SingleTarget/ST_01.png')
-
+# image = skimage.io.imread(file)
 # To reduce memory usage when running on MacBookPro
 from PIL import Image
 image = np.array(
-    Image.open('./SnapData/SingleTarget/ST_01.png')
-    .resize( (960,540), Image.ANTIALIAS )
+    Image.open(file)
+    .resize( (width,height), Image.ANTIALIAS )
 )
 
 # Run detection
-results = model.detect([image], verbose=1)
-
 # Visualize results
-r = results[0]
-visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
-                            class_names, r['scores'])
 ```
 
 ### 提取每个滑雪者的特征
@@ -158,18 +166,27 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
         - 调整`batch_size`实现更高效的图片处理（#TODO）
         - 更大量的图片处理（#TODO）
     2. [**初步分析**](#初步分析)所有图片的结果
-        - Score 分布
-        - 每个照片的 Box 数量分布
+        - Fig1 Score 分布
+            - 整体：0.7~1.0
+            - 人：~1.0
+            - 雪板：0.7~1.0
+        - Fig2 每个照片的 Box 数量分布
             - RawData:   Median=3
             - CleanData: Median=2
-        - Class 数量分布
-        - BoxSize 分布
+            - 对象多处在图片正中央
+                - 摄影中的黄金分割不见了
+                - 可能和运动摄影的速度要求有关
+                （焦点在中央以减少“对焦到按下快门”时间）
+        - Fig3 Class 数量分布
+            - 主要对象为人和雪板
+            - 其他类别的鉴定可认为是“错误”忽略
+        - Fig3 BoxSize 分布：见图
     3. 保留有意义的信息 **CleanData**
         - Class in ['person', 'skis', 'snowboard']
         - Score > 0.7
         - Person's Score > 0.9
         - Person's BoxSize > 1% ImageSize
-        （删掉非被摄主体，“抢镜头”的人很多很多）
+        （删掉非被摄主体，“抢镜头”的人很多很多，平均2+人/照片）
         - 使用上面的参数删掉了 ~40% 的 Box
         - CleanData保存成 .pkl 文件大小约 3G，保留 ~10k 个 Box
 - 用提取的信息构建数据库 **#TAG-HEAD**
@@ -209,7 +226,7 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
       <td>0.999791</td>
       <td>[244, 614, 400, 684]</td>
       <td>3.340471</td>
-      <td>[False, False, False, False, False, False, ...</td>
+      <td>[False, False, False, ... , False]</td>
       <td>0</td>
     </tr>
     <tr>
@@ -218,7 +235,7 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
       <td>0.999780</td>
       <td>[211, 299, 344, 432]</td>
       <td>5.411135</td>
-      <td>[False, False, False, False, False, False, ...</td>
+      <td>[False, False, False, ... , False]</td>
       <td>0</td>
     </tr>
     <tr>
@@ -227,7 +244,7 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
       <td>0.991058</td>
       <td>[320, 268, 365, 417]</td>
       <td>2.051086</td>
-      <td>[False, False, False, False, False, False, ...</td>
+      <td>[False, False, False, ... , False]</td>
       <td>0</td>
     </tr>
     <tr>
@@ -236,7 +253,7 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
       <td>0.944588</td>
       <td>[384, 622, 404, 686]</td>
       <td>0.391557</td>
-      <td>[False, False, False, False, False, False, ...</td>
+      <td>[False, False, False, ... , False]</td>
       <td>0</td>
     </tr>
     <tr>
@@ -245,7 +262,7 @@ visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
       <td>0.900126</td>
       <td>[221, 138, 249, 156]</td>
       <td>0.154176</td>
-      <td>[False, False, False, False, False, False, ...</td>
+      <td>[False, False, False, ... , False]</td>
       <td>0</td>
     </tr>
   </tbody>
