@@ -63,10 +63,10 @@
 4. 返回匹配度高的照片给滑雪者挑选
     - 容忍假阳性
     - 抗拒假阴性
-    - 处理不匹配照片的方式很棘手
+    - 处理非被摄主题匹配照片的方式很棘手
 5. 结果
-    - 成功跑通流程，成立公司与“滑呗”接触，提高准确度，投入商业化，赚钱（白日梦）
-    - 边学边玩、纯玩、烂尾（这个靠谱）
+    - 成功跑通流程，成立公司与“滑呗”接触，提高准确度，投入商业化，赚钱（白日梦 :heart_eyes: ）
+    - 边学边玩、纯玩、烂尾（这个靠谱 :sunglasses: ）
 
 ---
 
@@ -108,20 +108,30 @@ Folder: `from_fenxuekeji`
 - 利用找到的API尝试get照片 [`01.Test_API_get_img.py`](./from_fenxuekeji/01.Test_API_get_img.py)
 - 获取一定量的照片URL [`02.Scraping_urls.py`](./from_fenxuekeji/02.Scraping_urls.py)
 - 下载照片 [`download_urls.sh`](./utils/download_urls.sh)
-    - @MingxuanHu 写的 Java 脚本暴力爬，竟然没被ban
-    （上家技术还需要提高）
+- 其他
     - 担心 API 发生变化，影响与公司合作前的时间窗口
-    （不能过分依靠好运气得到的API）
+    （不能过分依靠好运气得到的API :sunglasses: ）
+    - 上家技术还需要提高 :worried:
+        - @MingxuanHu 写的 Java 脚本暴力爬，搞了几个G竟然没被ban
+    - 同一张照片有各种大小
+        - 应该是为了APP的小图预览
+        - 我们下载了大照片
+        - 有不同大小的照片，因此可以用AI增加分辨率
+        - 没有关注原始图像能否直接获取 :imp:
+    - 小照片没水印，大照片有水印
+        - 所有照片水印都是一样的，因此可以用AI去掉 :smiling_imp:
+    - 不过既然吃了上家资源又要赚上家钱，就不坑上家了 :grimacing:
 
 ### 在照片中找出每个滑雪者
 
 - 配置 Mask R-CNN 运行环境 [`setup_MaskRCNN.sh`](./utils/setup_MaskRCNN.sh)
-    - 除 [imgaug](https://github.com/aleju/imgaug), [pycocotools](https://github.com/cocodataset/cocoapi) 以外，其他为常用包（来自于不做CV的无知）
+    - 除 [imgaug](https://github.com/aleju/imgaug), [pycocotools](https://github.com/cocodataset/cocoapi) 以外，其他为常用包
+    （来自于不做CV的无知 :mask: ）
 - 测试 Mask R-CNN [`demo.ipynb`](https://github.com/matterport/Mask_RCNN/blob/master/samples/demo.ipynb)
 - 在单反相机照片和用API手动get的照片上测试 Mask R-CNN ( based on `demo.ipynb` )
-    - 效果比想象中的好！
-    - 模型能够准确识别出雪板！
-    - 有些照片单板双板直接可以区分！（`skis` / `snowboard`）
+    - 效果比想象中的好！:v:
+    - 有些照片模型能够识别出雪板！单板双板直接可以区分！
+    :ski:`skis` /:snowboarder:`snowboard`
 
 <html>
     <table style="margin-left: auto; margin-right: auto;" align="center">
@@ -160,11 +170,11 @@ image = np.array(
 
 - 从 Mask R-CNN 的模型输出提取信息
     1. 保存每个照片每个对象的 box, mask, class, scores 为 [**DataFrame**](#DataFrame)
-        - 一个显卡（Titan X）约30分钟就处理完了4000张照片
+        - 一个显卡（Titan X）约30分钟就处理完了4000张照片 :zap:
         - 原始结果保存成 .pkl 文件大小约 6G，找到 ~17k 个 Box
-        - 高效结果存储（#TODO）
-        - 调整`batch_size`实现更高效的图片处理（#TODO）
-        - 更大量的图片处理（#TODO）
+        - 高效结果存储（:pushpin:#TODO）
+        - 调整`batch_size`实现更高效的图片处理（:pushpin:#TODO）
+        - 更大量的图片处理（:pushpin:#TODO）
     2. [**初步分析**](#初步分析)所有图片的结果
         - Fig1 Score 分布
             - 整体：0.7~1.0
@@ -176,7 +186,7 @@ image = np.array(
             - 对象多处在图片正中央
                 - 摄影中的黄金分割不见了
                 - 可能和运动摄影的速度要求有关
-                （焦点在中央以减少“对焦到按下快门”时间）
+                （焦点在中央以减少“对焦到按下快门”时间 :sunglasses: ）
         - Fig3 Class 数量分布
             - 主要对象为人和雪板
             - 其他类别的鉴定可认为是“错误”忽略
@@ -186,7 +196,9 @@ image = np.array(
         - Score > 0.7
         - Person's Score > 0.9
         - Person's BoxSize > 1% ImageSize
-        （删掉非被摄主体，“抢镜头”的人很多很多，平均2+人/照片）
+            - 删掉非被摄主体
+            - 平均 ~3人/照片
+            （“抢镜头”的人很多很多，还是应该说这个模型真:ox::beer:）
         - 使用上面的参数删掉了 ~40% 的 Box
         - CleanData保存成 .pkl 文件大小约 3G，保留 ~10k 个 Box
 - 用提取的信息构建数据库 **#TAG-HEAD**
