@@ -83,13 +83,15 @@
 - [x] [使用 Mask R-CNN 提取特征](#提取每个滑雪者的特征)
     - [ ] 海量照片高效提取
     - [ ] 高效结果存储
-    - [x] 结果可视化重现
+    - [x] 结果可视化重现 `Show_Img`
 
 #### 特征分析
 - [x] [基本分析](#初步分析)
+- [ ] 像素分析
 - [ ] 降维、聚类
 - [ ] 卷积神经网络分类
-- [ ] 运用其他模型
+- [ ] 运用其他模型提取特征
+    - [ ] 常规 CV 算法
     - [ ] 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
     - [ ] DeepFashion: [中文介绍](https://www.jianshu.com/p/3fceb8d84a2d)
     - [ ] etc.
@@ -190,7 +192,7 @@ image = np.array(
         - Fig3 Class 数量分布
             - 主要对象为人和雪板
             - 其他类别的鉴定可认为是“错误”忽略
-        - Fig3 BoxSize 分布：见图
+        - Fig4 BoxSize 分布：见图
     3. 保留有意义的信息 **CleanData**
         - Class in ['person', 'skis', 'snowboard']
         - Score > 0.7
@@ -202,19 +204,38 @@ image = np.array(
         - 使用上面的参数删掉了 ~40% 的 Box
         - CleanData保存成 .pkl 文件大小约 3G，保留 ~10k 个 Box
 - 用提取的信息构建数据库 **#TAG-HEAD**
-    - 数据库设计
-        - 设计数据库结构
-        - 如何验证？
-        - 如何快速可视化结果？
-    - 特征工程
-        - 不同颜色像素的比例
-    - 卷积神经网络
-        - 利用 Mask R-CNN 输出作为标记，训练 CNN 区分单板/双板
-    - 非监督学习、降维、聚类
-        - PCA & tSNE
-        - Autoencoder
-    - 姿态识别
-    - etc.
+    - 从原始图像中提取出 InBox Pixels
+        - 函数： `extInBoxPixels`
+            - 提取 InBox  Pixels
+            - 提取 InMask Pixels
+        - 提取滑雪者
+    - 固定提取出的 BoxSize
+        - 函数 `squareBox`
+        - shape = (150, 150, 3)
+        - [BoxSize Distribution](./imgs/BoxSize.png)
+    - 卷积神经网络进一步提取 InBox Pixels 的特征 **#TAG-FOLK**
+        - 模型：`ResNet50`
+        - 每个滑雪者转换为一个 2048 维向量
+    - 降维
+        - 使用三种算法降维（PCA, tSNE, UMAP）
+        - [低维展示](./imgs/DR.png)
+        - 手动选择一簇低维空间中的点，可视化其InBoxPixels和原始图片 **#TAG-HEAD**
+            - 选择了 UMAP 二维空间中最上面中间偏右的那一簇数据点
+            - 结果很好，目标几乎是同一个人（有一个不是，可能是那一簇旁边的那个点）
+    - TODO outline **#TAG-FOLK**
+        - 数据库设计
+            - 设计数据库结构
+            - 如何验证？
+            - 如何快速可视化结果？
+        - 特征工程
+            - 不同颜色像素的比例
+        - 卷积神经网络
+            - 利用 Mask R-CNN 输出作为标记，训练 CNN 区分单板/双板
+        - 非监督学习、降维、聚类
+            - PCA & tSNE
+            - Autoencoder
+        - 姿态识别
+        - etc.
 
 
 #### DataFrame
