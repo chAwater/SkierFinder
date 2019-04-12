@@ -222,6 +222,7 @@ image = np.array(
         - 手动选择一簇低维空间中的点，可视化其InBoxPixels和原始图片 **#TAG-HEAD**
             - 选择了 UMAP 二维空间中最上面中间偏右的那一簇数据点
             - 结果很好，目标几乎是同一个人（有一个不是，可能是那一簇旁边的那个点）
+            - 结果见 [img](./imgs/tmp_img.png) :bangbang:
     - TODO outline **#TAG-FOLK**
         - 数据库设计
             - 设计数据库结构
