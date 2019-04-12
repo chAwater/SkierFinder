@@ -1,3 +1,8 @@
+* 2019.04.12
+    - Use ResNet50 extract feature of InBox Pixels
+    - Use PCA, tSNE, UMAP to DR and visualize results
+    - Visualize UMAP cluster InBox Pixels and row images
+    - Add Images for BoxSize Distribution and Dimensionality Reduction
 * 2019.04.11
     - Add v0.0 tag message
     - Rephrasing, Add some explanations, Add emoji
