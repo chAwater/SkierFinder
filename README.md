@@ -84,17 +84,20 @@
     - [ ] 海量照片高效提取
     - [ ] 高效结果存储
     - [x] 结果可视化重现 `Show_Img`
+- [ ] 卷积神经网络进一步提取特征
+    - [ ] ResNet50 提取滑雪者所在 Box
+    - [ ] ResNet50 提取滑雪者所在 Mask
+- [ ] 运用其他模型提取特征
+    - [ ] 常规 CV 算法
+    - [ ] 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
+    - [ ] DeepFashion: [中文介绍](https://www.jianshu.com/p/3fceb8d84a2d)
+    - [ ] etc.
 
 #### 特征分析
 - [x] [基本分析](#初步分析)
 - [ ] 像素分析
 - [ ] 降维、聚类
 - [ ] 卷积神经网络分类
-- [ ] 运用其他模型提取特征
-    - [ ] 常规 CV 算法
-    - [ ] 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
-    - [ ] DeepFashion: [中文介绍](https://www.jianshu.com/p/3fceb8d84a2d)
-    - [ ] etc.
 
 #### NEXT
 - [ ] TAD-HEAD
