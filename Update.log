@@ -1,3 +1,15 @@
+* 2019.04.13
+    - Visualize tSNE clusters
+        - #TAG-ignore
+        - only got 8 clusters
+        - two of them are belong to one cluster
+        - one of them are mixed with two but similar skiers
+        - one of them is not clustered by skiers clothes
+    - Rank person
+        - #TAG-ignore
+        - rank_ID = np.argsort(np.dot(inputV, dataV.T))[::-1]
+        - Acceptable result
+        - Reference: https://github.com/willard-yuan/flask-keras-cnn-image-retrieval.git
 * 2019.04.12
     - Use ResNet50 extract feature of InBox Pixels
     - Use PCA, tSNE, UMAP to DR and visualize results
