@@ -173,73 +173,84 @@ image = np.array(
 
 ### 提取每个滑雪者的特征
 
-- 从 Mask R-CNN 的模型输出提取信息
-    1. 保存每个照片每个对象的 box, mask, class, scores 为 [**DataFrame**](#DataFrame)
-        - 一个显卡（Titan X）约30分钟就处理完了4000张照片 :zap:
-        - 原始结果保存成 .pkl 文件大小约 6G，找到 ~17k 个 Box
-        - 高效结果存储（:pushpin:#TODO）
-        - 调整`batch_size`实现更高效的图片处理（:pushpin:#TODO）
-        - 更大量的图片处理（:pushpin:#TODO）
-    2. [**初步分析**](#初步分析)所有图片的结果
-        - Fig1 Score 分布
-            - 整体：0.7~1.0
-            - 人：~1.0
-            - 雪板：0.7~1.0
-        - Fig2 每个照片的 Box 数量分布
-            - RawData:   Median=3
-            - CleanData: Median=2
-            - 对象多处在图片正中央
-                - 摄影中的黄金分割不见了
-                - 可能和运动摄影的速度要求有关
-                （焦点在中央以减少“对焦到按下快门”时间 :sunglasses: ）
-        - Fig3 Class 数量分布
-            - 主要对象为人和雪板
-            - 其他类别的鉴定可认为是“错误”忽略
-        - Fig4 BoxSize 分布：见图
-    3. 保留有意义的信息 **CleanData**
-        - Class in ['person', 'skis', 'snowboard']
-        - Score > 0.7
-        - Person's Score > 0.9
-        - Person's BoxSize > 1% ImageSize
-            - 删掉非被摄主体
-            - 平均 ~3人/照片
-            （“抢镜头”的人很多很多，还是应该说这个模型真:ox::beer:）
-        - 使用上面的参数删掉了 ~40% 的 Box
-        - CleanData保存成 .pkl 文件大小约 3G，保留 ~10k 个 Box
-- 用提取的信息构建数据库 **#TAG-HEAD**
-    - 从原始图像中提取出 InBox Pixels
-        - 函数： `extInBoxPixels`
-            - 提取 InBox  Pixels
-            - 提取 InMask Pixels
-        - 提取滑雪者
-    - 固定提取出的 BoxSize
-        - 函数 `squareBox`
-        - shape = (150, 150, 3)
-        - [BoxSize Distribution](./imgs/BoxSize.png)
-    - 卷积神经网络进一步提取 InBox Pixels 的特征 **#TAG-FOLK**
-        - 模型：`ResNet50`
-        - 每个滑雪者转换为一个 2048 维向量
-    - 降维
+#### 从 Mask R-CNN 的模型输出提取信息
+
+1. 保存每个照片每个对象的 box, mask, class, scores 为 [**DataFrame**](#DataFrame)
+    - 一个显卡（Titan X）约30分钟就处理完了4000张照片 :zap:
+    - 原始结果保存成 .pkl 文件大小约 6G，找到 ~17k 个 Box
+    - 高效结果存储（:pushpin:#TODO）
+    - 调整`batch_size`实现更高效的图片处理（:pushpin:#TODO）
+    - 更大量的图片处理（:pushpin:#TODO）
+2. [**初步分析**](#初步分析)所有图片的结果
+    - Fig1 Score 分布
+        - 整体：0.7~1.0
+        - 人：~1.0
+        - 雪板：0.7~1.0
+    - Fig2 每个照片的 Box 数量分布
+        - RawData:   Median=3
+        - CleanData: Median=2
+        - 对象多处在图片正中央
+            - 摄影中的黄金分割不见了
+            - 可能和运动摄影的速度要求有关
+            （焦点在中央以减少“对焦到按下快门”时间 :sunglasses: ）
+    - Fig3 Class 数量分布
+        - 主要对象为人和雪板
+        - 其他类别的鉴定可认为是“错误”忽略
+    - Fig4 BoxSize 分布：见图
+3. 保留有意义的信息 **CleanData**
+    - Class in ['person', 'skis', 'snowboard']
+    - Score > 0.7
+    - Person's Score > 0.9
+    - Person's BoxSize > 1% ImageSize
+        - 删掉非被摄主体
+        - 平均 ~3人/照片
+        （“抢镜头”的人很多很多，还是应该说这个模型真:ox::beer:）
+    - 使用上面的参数删掉了 ~40% 的 Box
+    - CleanData保存成 .pkl 文件大小约 3G，保留 ~10k 个 Box
+
+#### 用提取的信息构建数据库 **#TAG-HEAD**
+1. 从原始图像中提取出 InBox Pixels
+    - 函数： `extInBoxPixels`
+        - 提取 InBox  Pixels
+        - 提取 InMask Pixels
+    - 提取滑雪者
+2. 固定提取出的 BoxSize
+    - 函数 `squareBox`
+    - shape = (150, 150, 3)
+    - [BoxSize Distribution](./imgs/BoxSize.png)
+3. 卷积神经网络进一步提取 InBox Pixels 的特征 **#TAG-FOLK**
+    - 模型：`ResNet50`
+    - 每个滑雪者转换为一个 2048 维向量
+4. 特征分析 **#TAG-LOOSE-END :zzz:**
+    - 降维、聚类
         - 使用三种算法降维（PCA, tSNE, UMAP）
         - [低维展示](./imgs/DR.png)
-        - 手动选择一簇低维空间中的点，可视化其InBoxPixels和原始图片 **#TAG-HEAD**
+        - 手动选择一簇低维空间中的点，可视化其 InBox Pixels 和原始图片
             - 选择了 UMAP 二维空间中最上面中间偏右的那一簇数据点
-            - 结果很好，目标几乎是同一个人（有一个不是，可能是那一簇旁边的那个点）
+                - 结果很好，目标几乎是同一个人
+                （有一个不是，可能是那一簇旁边的那个点）
             - 结果见 [img](./imgs/tmp_img.png) :bangbang:
-    - TODO outline **#TAG-FOLK**
-        - 数据库设计
-            - 设计数据库结构
-            - 如何验证？
-            - 如何快速可视化结果？
-        - 特征工程
-            - 不同颜色像素的比例
-        - 卷积神经网络
-            - 利用 Mask R-CNN 输出作为标记，训练 CNN 区分单板/双板
-        - 非监督学习、降维、聚类
-            - PCA & tSNE
-            - Autoencoder
-        - 姿态识别
-        - etc.
+        - 使用 HDBSCAN 聚类
+            - 结果不太理想，只找到 9 个类
+                - 1 个类项目太多，无意义
+                - 1 个类不是由滑雪者雪服聚出来的，而是动作+搓雪花
+                - 2 个类中包含两个类似的滑雪者
+                - 2 个类来自于同一个滑雪者
+        - 需要进一步学习提高 :end:
+- TODO outline **#TAG-FOLK**
+    - 数据库设计
+        - 设计数据库结构
+        - 如何验证？
+        - 如何快速可视化结果？
+    - 特征工程
+        - 不同颜色像素的比例
+    - 卷积神经网络
+        - 利用 Mask R-CNN 输出作为标记，训练 CNN 区分单板/双板
+    - 非监督学习、降维、聚类
+        - PCA & tSNE
+        - Autoencoder
+    - 姿态识别
+    - etc.
 
 
 #### DataFrame
