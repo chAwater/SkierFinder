@@ -127,6 +127,8 @@ Folder: `from_fenxuekeji`
         - 所有照片水印都是一样的，因此可以用AI去掉 :smiling_imp:
     - 不过既然吃了上家资源又要赚上家钱，就不坑上家了 :grimacing:
 
+---
+
 ### 在照片中找出每个滑雪者
 
 - 配置 Mask R-CNN 运行环境 [`setup_MaskRCNN.sh`](./utils/setup_MaskRCNN.sh)
@@ -151,25 +153,7 @@ Folder: `from_fenxuekeji`
     </table>
 </html>
 
-```python
-class InferenceConfig(coco.CocoConfig):
-    # To reduce memory usage when running on MacBookPro
-    MAX_GT_INSTANCES = 20
-    IMAGE_MAX_DIM = 512
-    IMAGE_MIN_DIM = 512
-
-# Load image
-# image = skimage.io.imread(file)
-# To reduce memory usage when running on MacBookPro
-from PIL import Image
-image = np.array(
-    Image.open(file)
-    .resize( (width,height), Image.ANTIALIAS )
-)
-
-# Run detection
-# Visualize results
-```
+---
 
 ### 提取每个滑雪者的特征
 
@@ -214,27 +198,29 @@ image = np.array(
         - 提取 InBox  Pixels
         - 提取 InMask Pixels
     - 提取滑雪者
+    - [BoxSize Distribution](./imgs/BoxSize.png)
 2. 固定提取出的 BoxSize
     - 函数 `squareBox`
+    - 等比缩放，填充白色
     - shape = (150, 150, 3)
-    - [BoxSize Distribution](./imgs/BoxSize.png)
 3. 卷积神经网络进一步提取 InBox Pixels 的特征 **#TAG-FOLK**
     - 模型：`ResNet50`
     - 每个滑雪者转换为一个 2048 维向量
-4. 特征分析 **#TAG-LOOSE-END :zzz:**
-    - 降维、聚类
-        - 使用三种算法降维（PCA, tSNE, UMAP）
-        - [低维展示](./imgs/DR.png)
+4. **#TAG-HEAD**
+5. 特征分析 **#TAG-LOOSE-END :zzz:**
+    - 对 ResNet50 提取出的特征向量降维、聚类
+        - 使用三种算法降维（PCA, tSNE, UMAP）[低维展示](#降维展示)
         - 手动选择一簇低维空间中的点，可视化其 InBox Pixels 和原始图片
             - 选择了 UMAP 二维空间中最上面中间偏右的那一簇数据点
                 - 结果很好，目标几乎是同一个人
                 （有一个不是，可能是那一簇旁边的那个点）
-        - 使用 HDBSCAN 聚类
-            - 结果不太理想，只找到 9 个类
-                - 1 个类项目太多，无意义
-                - 1 个类不是由滑雪者雪服聚出来的，而是动作+搓雪花
-                - 2 个类中包含两个类似的滑雪者
-                - 2 个类来自于同一个滑雪者
+        - 使用 HDBSCAN 聚类 [低维展示](#降维展示)
+            - 以 tSNE 结果为例
+            - 参数需要微调，结果不稳定，不理想
+                - 有的聚类项目太多无意义
+                - 有的聚类不是由滑雪者雪服聚出来的，而是动作+搓雪花
+                - 有的聚类包含两个类似的滑雪者
+                - 有的多个聚类属于同一个滑雪者
         - 需要进一步学习提高 :end:
 - TODO outline **#TAG-FOLK**
     - 数据库设计
@@ -251,6 +237,13 @@ image = np.array(
     - 姿态识别
     - etc.
 
+---
+
+### 根据上传的照片进行匹配
+
+### 结果评估
+
+---
 
 #### DataFrame
 
@@ -319,11 +312,9 @@ image = np.array(
 
 ![](./imgs/Mask_RCNN_result_analysis.png)
 
+#### 降维展示
 
-### 根据上传的照片进行匹配
-
-### 结果评估
-
+![](./imgs/DR.png)
 
 ##### Version
 
