@@ -84,8 +84,8 @@
     - [ ] 海量照片高效提取
     - [ ] 高效结果存储
     - [x] 结果可视化重现 `Show_Img`
-- [ ] 卷积神经网络进一步提取特征
-    - [ ] ResNet50 提取滑雪者所在 Box
+- [ ] [卷积神经网络进一步提取特征](#用提取的信息构建数据库)
+    - [x] ResNet50 提取滑雪者所在 Box `extInBoxPixels`
     - [ ] ResNet50 提取滑雪者所在 Mask
 - [ ] 运用其他模型提取特征
     - [ ] 常规 CV 算法
@@ -95,12 +95,15 @@
 
 #### 特征分析
 - [x] [基本分析](#初步分析)
-- [ ] 像素分析
-- [ ] 降维、聚类
+- [ ] 像素分析，特征工程，CV
+- [x] [降维、聚类](#降维展示)
 - [ ] 卷积神经网络分类
 
 #### NEXT
-- [ ] TAD-HEAD
+- [ ] TAG-HEAD
+- [ ] TAG-FOLK
+- [ ] TAG-Q
+- [ ] TAG-LOOSE-END
 - [ ] 尝试布置计划到[看板](https://github.com/chAwater/SkierFinder/projects)
 - [ ] 下一步计划中......
 
@@ -157,7 +160,11 @@ Folder: `from_fenxuekeji`
 
 ### 提取每个滑雪者的特征
 
+Folder: `analysis`
+
 #### 从 Mask R-CNN 的模型输出提取信息
+
+[`01.Mask_RCNN_result_analysis.py`](./analysis/01.Mask_RCNN_result_analysis.py)
 
 1. 保存每个照片每个对象的 box, mask, class, scores 为 [**DataFrame**](#DataFrame)
     - 一个显卡（Titan X）约30分钟就处理完了4000张照片 :zap:
@@ -192,12 +199,15 @@ Folder: `from_fenxuekeji`
     - 使用上面的参数删掉了 ~40% 的 Box
     - CleanData保存成 .pkl 文件大小约 3G，保留 ~10k 个 Box
 
-#### 用提取的信息构建数据库 **#TAG-HEAD**
+#### 用提取的信息构建数据库
+
+[`02.Extract_features_from_InBoxPixels.py`](analysis/02.Extract_features_from_InBoxPixels.py)
+
 1. 从原始图像中提取出 InBox Pixels
     - 函数： `extInBoxPixels`
         - 提取 InBox  Pixels
-        - 提取 InMask Pixels
-    - 提取滑雪者
+        - 提取 InMask Pixels :zzz:
+    - 只提取滑雪者，雪板暂时忽略
     - [BoxSize Distribution](./imgs/BoxSize.png)
 2. 固定提取出的 BoxSize
     - 函数 `squareBox`
@@ -205,9 +215,10 @@ Folder: `from_fenxuekeji`
     - shape = (150, 150, 3)
 3. 卷积神经网络进一步提取 InBox Pixels 的特征 **#TAG-FOLK**
     - 模型：`ResNet50`
-    - 每个滑雪者转换为一个 2048 维向量
-4. **#TAG-HEAD**
-5. 特征分析 **#TAG-LOOSE-END :zzz:**
+    - 每个滑雪者转换为一个 2048 维向量，保存
+    - 向量是否要做 Normalization (np.linalg.norm) :question: **#TAG-Q**
+    - Reference: [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval)
+4. 特征分析 **#TAG-LOOSE-END** :zzz:
     - 对 ResNet50 提取出的特征向量降维、聚类
         - 使用三种算法降维（PCA, tSNE, UMAP）[低维展示](#降维展示)
         - 手动选择一簇低维空间中的点，可视化其 InBox Pixels 和原始图片
@@ -216,24 +227,21 @@ Folder: `from_fenxuekeji`
                 （有一个不是，可能是那一簇旁边的那个点）
         - 使用 HDBSCAN 聚类 [低维展示](#降维展示)
             - 以 tSNE 结果为例
-            - 参数需要微调，结果不稳定，不理想
+            - 参数需要微调，结果不稳定，不理想 :musical_note:
                 - 有的聚类项目太多无意义
                 - 有的聚类不是由滑雪者雪服聚出来的，而是动作+搓雪花
                 - 有的聚类包含两个类似的滑雪者
                 - 有的多个聚类属于同一个滑雪者
         - 需要进一步学习提高 :end:
+5. 构建数据库 **#TAG-HEAD**
+
 - TODO outline **#TAG-FOLK**
     - 数据库设计
         - 设计数据库结构
         - 如何验证？
         - 如何快速可视化结果？
-    - 特征工程
-        - 不同颜色像素的比例
     - 卷积神经网络
         - 利用 Mask R-CNN 输出作为标记，训练 CNN 区分单板/双板
-    - 非监督学习、降维、聚类
-        - PCA & tSNE
-        - Autoencoder
     - 姿态识别
     - etc.
 
