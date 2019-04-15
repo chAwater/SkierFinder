@@ -22,7 +22,7 @@
 
 我们的想法是利用最先进的（State-of-art）、基于人工智能的图像识别技术，帮助我们高效、准确的完成这个“**寻找 -> 提取 -> 匹配**”的过程。
 
-（在我当前微薄的知识储备下认为）其中可能涉及到的技术、人工智能算法、模型和结果主要有：
+（:beginner: 在我当前微薄的知识储备下认为）其中可能涉及到的技术、人工智能算法、模型和结果主要有：
 
 0. 可以通过爬虫等方式，获取“滑呗”APP上一定量的低清晰度照片
     - 爬虫
@@ -76,17 +76,18 @@
 
 #### 数据获取
 - [x] [爬虫](#获取滑雪照片)
-    - [ ] 如何获得 API
-- [ ] 其他渠道获取照片
+    - [ ] 如何获得 API :warning:
+- [ ] 其他渠道获取照片 :zzz:
 
 #### 特征提取
 - [x] [使用 Mask R-CNN 提取特征](#提取每个滑雪者的特征)
     - [ ] 海量照片高效提取
     - [ ] 高效结果存储
     - [x] 结果可视化重现 `Show_Img`
-- [ ] [卷积神经网络进一步提取特征](#用提取的信息构建数据库)
+- [x] [卷积神经网络进一步提取特征](#用提取的信息构建数据库)
     - [x] ResNet50 提取滑雪者所在 Box `extInBoxPixels`
-    - [ ] ResNet50 提取滑雪者所在 Mask
+    - [ ] ResNet50 提取滑雪者所在 Mask :zzz:
+    - [ ] VGG19 提取滑雪者所在 Box :pushpin:
 - [ ] 运用其他模型提取特征
     - [ ] 常规 CV 算法
     - [ ] 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
@@ -95,17 +96,23 @@
 
 #### 特征分析
 - [x] [基本分析](#初步分析)
-- [ ] 像素分析，特征工程，CV
+- [ ] 像素分析，特征工程，CV :zzz:
 - [x] [降维、聚类](#降维展示)
 - [ ] 卷积神经网络分类
 
 #### NEXT
-- [ ] TAG-HEAD
-- [ ] TAG-FOLK
-- [ ] TAG-Q
-- [ ] TAG-LOOSE-END
 - [ ] 尝试布置计划到[看板](https://github.com/chAwater/SkierFinder/projects)
 - [ ] 下一步计划中......
+
+#### TAGs
+|     TAG Name      | TAG emoji |
+|        :-:        |    :-:    |  
+|       HEAD        | :pushpin: |
+|     CHECKPOINT    | :anchor:  |
+|       FOLK        | :arrow_heading_down: :leftwards_arrow_with_hook: |
+|    FINE-TUNING    | :construction: :musical_note: |
+|      QUESTION     | :question: |
+|     LOOSE-END     | :curly_loop: :end: |
 
 ---
 
@@ -116,7 +123,7 @@ Folder: `from_fenxuekeji`
 - 利用找到的API尝试get照片 [`01.Test_API_get_img.py`](./from_fenxuekeji/01.Test_API_get_img.py)
 - 获取一定量的照片URL [`02.Scraping_urls.py`](./from_fenxuekeji/02.Scraping_urls.py)
 - 下载照片 [`download_urls.sh`](./utils/download_urls.sh)
-- 其他
+- 其他 :warning:
     - 担心 API 发生变化，影响与公司合作前的时间窗口
     （不能过分依靠好运气得到的API :sunglasses: ）
     - 上家技术还需要提高 :worried:
@@ -199,6 +206,8 @@ Folder: `analysis`
     - 使用上面的参数删掉了 ~40% 的 Box
     - CleanData保存成 .pkl 文件大小约 3G，保留 ~10k 个 Box
 
+:anchor:
+
 #### 用提取的信息构建数据库
 
 [`02.Extract_features_from_InBoxPixels.py`](analysis/02.Extract_features_from_InBoxPixels.py)
@@ -213,12 +222,17 @@ Folder: `analysis`
     - 函数 `squareBox`
     - 等比缩放，填充白色
     - shape = (150, 150, 3)
-3. 卷积神经网络进一步提取 InBox Pixels 的特征 **#TAG-FOLK**
+3. 卷积神经网络进一步提取 InBox Pixels 的特征 :arrow_heading_down:
     - 模型：`ResNet50`
     - 每个滑雪者转换为一个 2048 维向量，保存
-    - 向量是否要做 Normalization (np.linalg.norm) :question: **#TAG-Q**
-    - Reference: [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval)
-4. 特征分析 **#TAG-LOOSE-END** :zzz:
+    - 聚类时是否要做 Normalization (np.linalg.norm) :question:
+        - 用向量点乘（余弦相似度）来搜索相近的向量
+        - 向量长度要用 L2 Normalization
+    - Reference:
+        - [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval)
+        - [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/4)
+        - [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/24)
+4. 特征分析 :zzz:
     - 对 ResNet50 提取出的特征向量降维、聚类
         - 使用三种算法降维（PCA, tSNE, UMAP）[低维展示](#降维展示)
         - 手动选择一簇低维空间中的点，可视化其 InBox Pixels 和原始图片
@@ -227,13 +241,15 @@ Folder: `analysis`
                 （有一个不是，可能是那一簇旁边的那个点）
         - 使用 HDBSCAN 聚类 [低维展示](#降维展示)
             - 以 tSNE 结果为例
-            - 参数需要微调，结果不稳定，不理想 :musical_note:
+            - 参数需要微调，结果不稳定，不理想 :construction:
                 - 有的聚类项目太多无意义
                 - 有的聚类不是由滑雪者雪服聚出来的，而是动作+搓雪花
                 - 有的聚类包含两个类似的滑雪者
                 - 有的多个聚类属于同一个滑雪者
-        - 需要进一步学习提高 :end:
+        - 需要进一步学习提高 :curly_loop: :end:
 5. 构建数据库 **#TAG-HEAD**
+
+:leftwards_arrow_with_hook:
 
 - TODO outline **#TAG-FOLK**
     - 数据库设计
