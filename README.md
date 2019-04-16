@@ -174,13 +174,14 @@ Folder: `analysis`
 [`01.Mask_RCNN_result_analysis.py`](./analysis/01.Mask_RCNN_result_analysis.py)
 
 1. 保存每个照片每个对象的 box, mask, class, scores 为 [**DataFrame**](#DataFrame)
-    - 一个显卡（Titan X）约30分钟就处理完了4000张照片 :zap:
-        - `A 12GB GPU can typically handle 2 images of 1024x1024px`
+    - 约30分钟就处理完了4000张照片 :zap:
     - 原始结果保存成 .pkl 文件大小约 6G，找到 ~17k 个 Box
     - 高效结果存储（:pushpin:#TODO）
     - 调整`batch_size`实现更高效的图片处理（:pushpin:#TODO）
-        - 2x GPU and 3x Image/GPU
-        - Only 
+        - 两个显卡（Titan X）
+        - `A 12GB GPU can typically handle 2 images of 1024x1024px`
+        - 2x GPU and 2x Image/GPU
+        - Only
     - 更大量的图片处理（:pushpin:#TODO）
 2. [**初步分析**](#初步分析)所有图片的结果
     - Fig1 Score 分布

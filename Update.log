@@ -3,6 +3,7 @@
     - Start coding on GPU node
     - Tips for GPU
         - Make sure tensorflow-gpu was installed
+        - Keep watching GPU memory
 * 2019.04.15
     - Add Tags and emoji
 * 2019.04.14
