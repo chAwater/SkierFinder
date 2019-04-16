@@ -1,3 +1,10 @@
+* 2019.04.16
+    - Start downloading bulk images from @MingxuanHu
+    - Start coding on GPU node
+    - Tips for GPU
+        - Make sure tensorflow-gpu was installed
+* 2019.04.15
+    - Add Tags and emoji
 * 2019.04.14
     - Cleanup DR and Clustering Code & Notebook
     - Upload Code
