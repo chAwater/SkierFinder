@@ -273,9 +273,11 @@ def resize_tool(image_pil, width, height):
 # In[8]:
 
 
-# from keras.applications.resnet50 import ResNet50, preprocess_input
+# from keras.applications.vgg19    import preprocess_input, VGG19
+# from keras.applications.resnet50 import preprocess_input, ResNet50
 from keras.applications.densenet import preprocess_input, DenseNet201
 
+# model = VGG19(
 # model = ResNet50(
 model = DenseNet201(
     weights = 'imagenet', 
@@ -314,6 +316,7 @@ rn50_in = np.stack(rn50_in)
 v = model.predict(rn50_in)
 v_norm = v/np.linalg.norm(v,axis=0)
 
+# np.save('VGG19_clean_person_box',v)
 # np.save('ResNet50_clean_person_box',v)
 np.save('DenseNet201_clean_person_box',v)
 
