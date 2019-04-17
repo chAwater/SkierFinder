@@ -58,7 +58,7 @@ vip_class = ['person','skis','snowboard']
 # In[4]:
 
 
-clean_df = pd.read_pickle('clean_df.pkl'     ).rename(columns={'class':'Class'})
+clean_df = pd.read_pickle('./pkl/clean_df.pkl').rename(columns={'class':'Class'})
 # data_df  = pd.read_pickle('./pkl/data_df.pkl')
 # data_df['Class'] = [ class_names[int(i)] for i in data_df['class_ids'] ]
 
@@ -273,9 +273,11 @@ def resize_tool(image_pil, width, height):
 # In[8]:
 
 
-from keras.applications.resnet50 import ResNet50, preprocess_input
+# from keras.applications.resnet50 import ResNet50, preprocess_input
+from keras.applications.densenet import preprocess_input, DenseNet201
 
-model = ResNet50(
+# model = ResNet50(
+model = DenseNet201(
     weights = 'imagenet', 
     pooling = 'max',
     input_shape = (150,150,3),
@@ -310,9 +312,10 @@ rn50_in = np.stack(rn50_in)
 
 
 v = model.predict(rn50_in)
-# v_norm = v/np.linalg.norm(v,axis=0) # Should I do that?
+v_norm = v/np.linalg.norm(v,axis=0)
 
-np.save('ResNet50_clean_person_box',v)
+# np.save('ResNet50_clean_person_box',v)
+np.save('DenseNet201_clean_person_box',v)
 
 
 # In[12]:
@@ -323,7 +326,7 @@ y = pd.Series(hs, name="Box_height")
 g = (
     sns.jointplot(x, y, kind="kde", height=6, space=0, n_levels=25, xlim=(0,400), ylim=(0,400), gridsize=80)
     .plot_joint(sns.kdeplot, shade=False, n_levels=25, color='black', linewidths=0.5, gridsize=80)
-).savefig('DR.png')
+).savefig('BoxSize.png')
 
 
 # In[13]:
@@ -376,7 +379,7 @@ fig.savefig('DR.png')
 # In[15]:
 
 
-# sim = clean_df.query('Class=="person"').reset_index().drop('index',axis=1).loc[umap_df.query('UMAP1>5 & -UMAP2<2').index]
+# sim = clean_df.query('Class=="person"').reset_index().drop('index',axis=1).loc[umap_df.query('UMAP1>5 & UMAP2>4').index]
 
 
 # In[16]:
