@@ -1,9 +1,13 @@
+* 2019.04.17
+    - Keep working on GPU
+    - Add Tips for GPU
+        - BATCH_SIZE -> IMAGES_PER_GPU
 * 2019.04.16
     - Start downloading bulk images from @MingxuanHu
     - Start coding on GPU node
     - Tips for GPU
         - Make sure tensorflow-gpu was installed
-        - Keep watching GPU memory
+        - Watching GPU memory
 * 2019.04.15
     - Add Tags and emoji
 * 2019.04.14
