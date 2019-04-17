@@ -2,6 +2,7 @@
     - Keep working on GPU
     - Add Tips for GPU
         - BATCH_SIZE -> IMAGES_PER_GPU
+    - Add VGG and DenseNet
 * 2019.04.16
     - Start downloading bulk images from @MingxuanHu
     - Start coding on GPU node
