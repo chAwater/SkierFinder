@@ -109,7 +109,7 @@
 |        :-:        |    :-:    |  
 |       HEAD        | :pushpin: |
 |     CHECKPOINT    | :anchor:  |
-|       FOLK        | :arrow_heading_down: :leftwards_arrow_with_hook: |
+|       FOLK        | :arrow_heading_down: :leftwards_arrow_with_hook: :twisted_rightwards_arrows:|
 |    FINE-TUNING    | :construction: :musical_note: |
 |      QUESTION     | :question: |
 |     LOOSE-END     | :curly_loop: :end: |
@@ -176,13 +176,7 @@ Folder: `analysis`
 1. 保存每个照片每个对象的 box, mask, class, scores 为 [**DataFrame**](#DataFrame)
     - 约30分钟就处理完了4000张照片 :zap:
     - 原始结果保存成 .pkl 文件大小约 6G，找到 ~17k 个 Box
-    - 高效结果存储（:pushpin:#TODO）
-    - 调整`batch_size`实现更高效的图片处理（:pushpin:#TODO）
-        - 两个显卡（Titan X）
-        - `A 12GB GPU can typically handle 2 images of 1024x1024px`
-        - 2x GPU and 2x Image/GPU
-        - Only
-    - 更大量的图片处理（:pushpin:#TODO）
+    - [更大量图片的高效处理](#大量图片高效处理) :twisted_rightwards_arrows:
 2. [**初步分析**](#初步分析)所有图片的结果
     - Fig1 Score 分布
         - 整体：0.7~1.0
@@ -232,10 +226,8 @@ Folder: `analysis`
     - 聚类时是否要做 Normalization (np.linalg.norm) :question:
         - 用向量点乘（余弦相似度）来搜索相近的向量
         - 向量长度要用 L2 Normalization
-    - Reference:
-        - [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval)
-        - [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/4)
-        - [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/24)
+    - References
+        - [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval) [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/4) [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/24)
 4. 特征分析 :zzz:
     - 对 ResNet50 提取出的特征向量降维、聚类
         - 使用三种算法降维（PCA, tSNE, UMAP）[低维展示](#降维展示)
@@ -343,6 +335,31 @@ Folder: `analysis`
 #### 降维展示
 
 ![](./imgs/DR.png)
+
+#### 大量图片高效处理
+- 多线程
+    - 多线程读取图片
+    - 多线程格式化数据
+- 使用GPU
+    - 图片处理速度提高 ~40x :rocket:
+    - Titan X Pascal
+        - `A 12GB GPU can typically handle 2 images of 1024x1024px`
+    - 调整 `batch_size`
+        - 2x GPU and 6x Image/GPU (700x467px, ~30%)
+    - Tips [`tips_for_GPU.sh`](./utils/tips_for_GPU.sh)
+- 高效结果存储
+    - 减少空间使用 :floppy_disk:
+        - **Masks**
+            - Lists -> Strings
+        - ROIs
+            - Lists -> 4x Int
+        - `df.info(memory_usage="deep")`
+        - 减少 90% 内存消耗
+    - Save DataFrame per batch
+- 整体提速 30%
+    - 30min -> 20min
+
+:pushpin:#TODO
 
 ##### Version
 
