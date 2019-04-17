@@ -85,9 +85,10 @@
     - [ ] 高效结果存储
     - [x] 结果可视化重现 `Show_Img`
 - [x] [卷积神经网络进一步提取特征](#用提取的信息构建数据库)
-    - [x] ResNet50 提取滑雪者所在 Box `extInBoxPixels`
-    - [ ] ResNet50 提取滑雪者所在 Mask :zzz:
-    - [ ] VGG19 提取滑雪者所在 Box :pushpin:
+    - [x] ResNet50    提取滑雪者所在 Box
+    - [ ] ResNet50    提取滑雪者所在 Mask :zzz:
+    - [x] DenseNet201 提取滑雪者所在 Box
+    - [x] VGG19       提取滑雪者所在 Box
 - [ ] 运用其他模型提取特征
     - [ ] 常规 CV 算法
     - [ ] 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
@@ -221,7 +222,8 @@ Folder: `analysis`
     - 等比缩放，填充白色
     - shape = (150, 150, 3)
 3. 卷积神经网络进一步提取 InBox Pixels 的特征 :arrow_heading_down:
-    - 模型：`ResNet50`
+    - 函数 `extInBoxPixels`
+    - 模型：`VGG19` `ResNet50` `DenseNet201`
     - 每个滑雪者转换为一个 2048 维向量，保存
     - 聚类时是否要做 Normalization (np.linalg.norm) :question:
         - 用向量点乘（余弦相似度）来搜索相近的向量
@@ -229,17 +231,17 @@ Folder: `analysis`
     - References
         - [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval) [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/4) [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/24)
 4. 特征分析 :zzz:
-    - 对 ResNet50 提取出的特征向量降维、聚类
+    - 对 DenseNet201 提取出的特征向量降维、聚类
         - 使用三种算法降维（PCA, tSNE, UMAP）[低维展示](#降维展示)
         - 手动选择一簇低维空间中的点，可视化其 InBox Pixels 和原始图片
             - 选择了 UMAP 二维空间中最上面中间偏右的那一簇数据点
                 - 结果很好，目标几乎是同一个人
-                （有一个不是，可能是那一簇旁边的那个点）
+                - ResNet50 的结果有一个不是，可能是那一簇旁边的那个点
         - 使用 HDBSCAN 聚类 [低维展示](#降维展示)
             - 以 tSNE 结果为例
             - 参数需要微调，结果不稳定，不理想 :construction:
                 - 有的聚类项目太多无意义
-                - 有的聚类不是由滑雪者雪服聚出来的，而是动作+搓雪花
+                - 有的聚类不是由滑雪者雪服聚出来的，而是动作+雪花
                 - 有的聚类包含两个类似的滑雪者
                 - 有的多个聚类属于同一个滑雪者
         - 需要进一步学习提高 :curly_loop: :end:
@@ -353,11 +355,9 @@ Folder: `analysis`
             - Lists -> Strings
         - ROIs
             - Lists -> 4x Int
-        - `df.info(memory_usage="deep")`
         - 减少 90% 内存消耗
+            - `df.info(memory_usage="deep")`
     - Save DataFrame per batch
-- 整体提速 30%
-    - 30min -> 20min
 
 :pushpin:#TODO
 
