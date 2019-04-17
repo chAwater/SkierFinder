@@ -12,8 +12,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 # Tricks
 sns.set(style='ticks', context='talk', font_scale=1.15)
-get_ipython().run_line_magic('matplotlib', 'inline')
-
 
 # In[2]:
 
