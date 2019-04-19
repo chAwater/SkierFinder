@@ -37,58 +37,51 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
                'teddy bear', 'hair drier', 'toothbrush']
 
+vip_class = ['person','skis','snowboard']
+
+IMAGE_SHAPE = (467, 700, 3)
+
 
 # # Load Data
 
 # In[3]:
 
 
-data_df = pd.read_pickle('pkl/data_df.pkl')
-
-
-# In[4]:
-
-
-# print (data_df.drop('class_ids',axis=1).head()[['class','scores','rois','box_size','masks','imgID']].to_html())
-
-# data_df.shape[0]
-# data_df.set_index('class').loc['person'].reset_index()['box_size'].median()
+data_df = pd.read_pickle('bulk_data_df.pkl')
 
 
 # # Process
 
-# In[5]:
+# In[4]:
 
 
-data_df['class'] = [ class_names[int(i)] for i in data_df['class_ids'] ]
+data_df['class'] = [ class_names[i] for i in data_df['class_ids'] ]
+imgs_size = IMAGE_SHAPE[0] * IMAGE_SHAPE[1]
 
-vip_class = ['person','skis','snowboard']
-
-imgs_size = pd.Series([ len(i) for i in data_df['masks'] ]).unique()[0]
-
-data_df['box_size'] = [(l[2]-l[0])*(l[3]-l[1]) for l in data_df['rois']]
+data_df['box_size'] = (0.+data_df['x2']-data_df['x1'])*(0.+data_df['y2']-data_df['y1'])
 data_df['box_size'] = data_df['box_size']/imgs_size*100
 
 
 # # Save Clean Data
 
-# In[6]:
+# In[5]:
 
 
 drop_idx = data_df.rename(columns={'class':'Class'}).query('Class=="person" & (box_size<1 | scores<=0.9)').index
-clean_df = data_df.reset_index().set_index('class').loc[vip_class].reset_index().set_index('index').drop(drop_idx).query('scores>0.7')
-clean_df.to_pickle('clean_df.pkl')
+
+clean_df = (
+    data_df
+    .reset_index().set_index('class')
+    .loc[vip_class]
+    .reset_index().set_index('index')
+    .drop(drop_idx).query('scores>0.7')
+)
+clean_df.to_pickle('bulk_clean_df.pkl')
 
 
 # ---
 
-# In[ ]:
-
-
-
-
-
-# In[7]:
+# In[6]:
 
 
 fig, ax = plt.subplots(nrows=2,ncols=2, figsize=(14,12))
@@ -135,11 +128,15 @@ ax[0,1].yaxis.set_ticks_position("right")
 # Box Heatmap
 axins = inset_axes(ax[0,1], width='50%', height='50%', loc='upper right')
 
-box_matrix = np.zeros((467, 700))
-for x1, y1, x2, y2 in clean_df['rois']:
+box_matrix = np.zeros((IMAGE_SHAPE[0], IMAGE_SHAPE[1]))
+for x1, y1, x2, y2 in clean_df[['x1','y1','x2','y2']].values:
     box_matrix[x1:x2, y1:y2] += 1
 
-# mask_matrix = np.stack(clean_df['masks']).reshape(-1, 467, 700).sum(axis=0)
+# mask_matrix = np.stack(
+#     clean_df['masks'].apply(
+#         lambda row: list(map(int, list(row)))
+#     )
+# ).reshape(-1, IMAGE_SHAPE[0], IMAGE_SHAPE[1]).sum(axis=0)
 
 g = sns.heatmap(box_matrix, cmap='RdBu_r',cbar=False, xticklabels=[],yticklabels=[],ax=axins)
 g.set_xlabel('In Box Pixels Heatmap',fontsize=12)
@@ -220,25 +217,6 @@ fig.savefig('DA.png')
 
 
 # ---
-
-# In[8]:
-
-
-# data_df.query('imgID=="6"')
-
-
-# In[9]:
-
-
-# image = imread('imgs_pw_20190331_wl_n1/6.jpg')
-# plt.imshow(image)
-
-
-# In[ ]:
-
-
-
-
 
 # In[ ]:
 
