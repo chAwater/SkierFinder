@@ -233,9 +233,7 @@ Folder: `analysis`
     - 函数 `extInBoxPixels`
     - 模型：`VGG19` `ResNet50` `DenseNet201`
     - 每个滑雪者转换为一个 2048 维向量，保存
-    - 聚类时是否要做 Normalization (np.linalg.norm) :question:
-        - 用向量点乘（余弦相似度）来搜索相近的向量
-        - 向量长度要用 L2 Normalization
+    - 聚类时是否要做 Normalization :question:
     - References
         - [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval) [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/4) [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/24)
 4. 特征分析 :zzz:
@@ -253,7 +251,9 @@ Folder: `analysis`
                 - 有的聚类包含两个类似的滑雪者
                 - 有的多个聚类属于同一个滑雪者
         - 需要进一步学习提高 :curly_loop: :end:
-5. 构建数据库 **#TAG-HEAD**
+5. 构建数据库
+
+:pushpin:
 
 :leftwards_arrow_with_hook:
 
@@ -270,6 +270,16 @@ Folder: `analysis`
 ---
 
 ### 根据上传的照片进行匹配
+
+- 在上传的照片上运行特征提取
+    - Mask R-CNN
+    - DenseNet201
+- 在数据库中搜索类似的滑雪者
+    - 用向量点乘（余弦相似度）来搜索相近的向量
+    - 根据相似度排序数据库中的图片
+    - 返回图片排序
+
+:pushpin:
 
 ### 结果评估
 
