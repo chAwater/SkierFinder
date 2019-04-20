@@ -1,3 +1,8 @@
+* 2019.04.19
+    - Keep working on GPU
+    - Switch to bulk pipeline
+    - Add query pipeline
+    - Start building tools
 * 2019.04.17
     - Keep working on GPU
     - Add Tips for GPU
