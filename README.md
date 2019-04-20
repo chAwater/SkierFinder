@@ -214,28 +214,30 @@ Folder: `analysis`
     - CleanData保存成 .pkl 文件大小约 3G，保留 ~10k 个 Box
 
 :anchor: :anchor: :anchor: :anchor: :anchor: :anchor: :anchor:
+:anchor: :anchor: :anchor: :anchor: :anchor: :anchor: :anchor:
+:anchor: :anchor: :anchor: :anchor: :anchor: :anchor: :anchor:
 
 #### 用提取的信息构建数据库
 
 [`02.Extract_features_from_InBoxPixels.py`](analysis/02.Extract_features_from_InBoxPixels.py)
 
 1. 从原始图像中提取出 InBox Pixels
-    - 函数： `extInBoxPixels`
+    - 函数： [`extInBoxPixels`](./utils/Tools.py#L150)
         - 提取 InBox  Pixels
         - 提取 InMask Pixels :zzz:
     - 只提取滑雪者，雪板暂时忽略
     - [BoxSize Distribution](./imgs/BoxSize.png)
 2. 固定提取出的 BoxSize
-    - 函数 `squareBox`
+    - 函数 [`squareBox`](./utils/Tools.py#L212)
     - 等比缩放，填充白色
     - shape = (150, 150, 3)
 3. 卷积神经网络进一步提取 InBox Pixels 的特征 :arrow_heading_down:
-    - 函数 `extInBoxPixels`
+    - 函数 [`extInBoxPixels`](./utils/Tools.py#L150)
     - 模型：`VGG19` `ResNet50` `DenseNet201`
     - 每个滑雪者转换为一个 2048 维向量，保存
     - 聚类时是否要做 Normalization :question:
     - References
-        - [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval) [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/4) [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/24)
+        - [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval) | [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/4) | [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/24)
 4. 特征分析 :zzz:
     - 对 DenseNet201 提取出的特征向量降维、聚类
         - 使用三种算法降维（PCA, tSNE, UMAP）[低维展示](#降维展示)
@@ -293,7 +295,10 @@ Folder: `analysis`
       <th></th>
       <th>class</th>
       <th>scores</th>
-      <th>rois</th>
+      <th>x1</th>
+      <th>y1</th>
+      <th>x2</th>
+      <th>y1</th>
       <th>box_size</th>
       <th>masks</th>
       <th>imgID</th>
@@ -304,46 +309,61 @@ Folder: `analysis`
       <th>0</th>
       <td>person</td>
       <td>0.999791</td>
-      <td>[244, 614, 400, 684]</td>
+      <td>244</td>
+      <td>614</td>
+      <td>400</td>
+      <td>684</td>
       <td>3.340471</td>
-      <td>[False, False, False, ... , False]</td>
-      <td>0</td>
+      <td>000000...</td>
+      <td>./path/to/imgs/0.jpg</td>
     </tr>
     <tr>
       <th>1</th>
       <td>person</td>
       <td>0.999780</td>
-      <td>[211, 299, 344, 432]</td>
+      <td>211</td>
+      <td>299</td>
+      <td>344</td>
+      <td>432</td>
       <td>5.411135</td>
-      <td>[False, False, False, ... , False]</td>
-      <td>0</td>
+      <td>000000...</td>
+      <td>./path/to/imgs/0.jpg</td>
     </tr>
     <tr>
       <th>2</th>
       <td>snowboard</td>
       <td>0.991058</td>
-      <td>[320, 268, 365, 417]</td>
+      <td>320</td>
+      <td>268</td>
+      <td>365</td>
+      <td>417</td>
       <td>2.051086</td>
-      <td>[False, False, False, ... , False]</td>
-      <td>0</td>
+      <td>000000...</td>
+      <td>./path/to/imgs/0.jpg</td>
     </tr>
     <tr>
       <th>3</th>
       <td>skis</td>
       <td>0.944588</td>
-      <td>[384, 622, 404, 686]</td>
+      <td>384</td>
+      <td>622</td>
+      <td>404</td>
+      <td>686</td>
       <td>0.391557</td>
-      <td>[False, False, False, ... , False]</td>
-      <td>0</td>
+      <td>000000...</td>
+      <td>./path/to/imgs/1.jpg</td>
     </tr>
     <tr>
       <th>4</th>
       <td>person</td>
       <td>0.900126</td>
-      <td>[221, 138, 249, 156]</td>
+      <td>221</td>
+      <td>138</td>
+      <td>249</td>
+      <td>156</td>
       <td>0.154176</td>
-      <td>[False, False, False, ... , False]</td>
-      <td>0</td>
+      <td>000000...</td>
+      <td>./path/to/imgs/1.jpg</td>
     </tr>
   </tbody>
 </table>
