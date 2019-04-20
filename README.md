@@ -32,37 +32,26 @@
             - Update: 2019.04.02 抓包失败了
 1. 在大量照片中找出每张照片中的每个滑雪者
     - 物体识别（Object Detection）和 图像分割（Image Segmentation）
-        - 模型：[Mask R-CNN](https://github.com/matterport/Mask_RCNN)、[YOLO](https://pjreddie.com/darknet/yolo/)
-        - 数据库：[COCO](http://cocodataset.org/#home)
-        - **优点**：模型高度成熟
-        - **缺点**：我不太熟悉，尝试后可以上手
+        - 模型：[Mask R-CNN](https://github.com/matterport/Mask_RCNN)、[YOLO](https://pjreddie.com/darknet/yolo/)；数据库：[COCO](http://cocodataset.org/#home)
+        - **优点**：模型高度成熟；**缺点**：不太熟悉，需要测试；
 2. 提取每个滑雪者的特征，建立数据库
     - 特征工程
         - 不同颜色像素的比例
-        - **优点**：非常简单
-        - **缺点**：不准确
+        - **优点**：非常简单； **缺点**：不准确；
     - 卷积神经网络提取特征
-        - 区分单板/双板
-        - 区分男女
-        - **优点**：简单，我现在可以上手
-        - **缺点**：依赖人工标注，工作量大，功能有限
+        - 区分单板/双板；区分男女
+        - **优点**：简单；**缺点**：依赖人工标注，工作量大，功能有限；
     - 非监督学习、降维、聚类
-        - Autoencoder
-        - PCA & tSNE
-        - **优点**：简单，我现在可以上手
-        - **缺点**：效率低，每次新加入数据，就需要重新跑一遍
+        - PCA & tSNE & Autoencoder
+        - **优点**：简单；**缺点**：效率低，每次新加入数据，就需要重新跑一遍；
     - 姿态识别（Pose Estimation）
-        - 根据姿势区分雪服/雪裤
-        - 根据姿势区分单板/双板
-        - **优点**：模型比较成熟，提取额外特征
-        - **缺点**：我完全不了解
+        - 根据姿势区分雪服/雪裤；区分单板/双板
+        - **优点**：模型比较成熟，提取额外特征；**缺点**：完全不了解，需要学习；
 3. 用户上传一张自己的照片，提取特征后与数据库进行匹配、索引
-    - 与 2 类似，但有区别
-        - 摄影角度差别很大
-        - 用户完整度有差别，（相比于滑行中）头、脸、腿信息可能不完整
+    - 与上一步类似，但有区别
+        - 摄影角度差别很大，信息完整度有差别（相比于滑行中，头、脸、腿信息可能不完整）
 4. 返回匹配度高的照片给滑雪者挑选
-    - 容忍假阳性
-    - 抗拒假阴性
+    - 容忍假阳性；抗拒假阴性；
     - 处理非被摄主题匹配照片的方式很棘手
 5. 结果
     - 成功跑通流程，成立公司与“滑呗”接触，提高准确度，投入商业化，赚钱（白日梦 :heart_eyes: ）
@@ -81,8 +70,8 @@
 
 #### 特征提取
 - [x] [使用 Mask R-CNN 提取特征](#提取每个滑雪者的特征)
-    - [ ] 海量照片高效提取
-    - [ ] 高效结果存储
+    - [x] 海量照片高效提取 :link: :pushpin:
+    - [x] 高效结果存储
     - [x] 结果可视化重现 [`Show_Img`](./utils/Tools.py#L61)
 - [x] [卷积神经网络进一步提取特征](#用提取的信息构建数据库)
     - [x] ResNet50    提取滑雪者所在 Box
@@ -113,10 +102,10 @@
 - [ ] 尝试布置计划到[看板](https://github.com/chAwater/SkierFinder/projects)
 - [ ] 下一步计划中......
 
-#### TAGs
+#### TAG
 |     TAG Name      | TAG emoji |
 |        :-:        |    :-:    |  
-|       HEAD        | :pushpin: |
+|     HEAD-TODO     | :pushpin: |
 |     CHECKPOINT    | :anchor:  |
 |       FOLK        | :arrow_heading_down: :leftwards_arrow_with_hook: :twisted_rightwards_arrows:|
 |    FINE-TUNING    | :construction: :musical_note: |
@@ -137,13 +126,12 @@ Folder: `from_fenxuekeji`
     （不能过分依靠好运气得到的API :sunglasses: ）
     - 上家技术还需要提高 :worried:
         - @MingxuanHu 写的 Java 脚本暴力爬，搞了几个G竟然没被ban
-    - 同一张照片有各种大小
-        - 应该是为了APP的小图预览
-        - 我们下载了大照片
-        - 有不同大小的照片，因此可以用AI增加分辨率
-        - 没有关注原始图像能否直接获取 :imp:
-    - 小照片没水印，大照片有水印
-        - 所有照片水印都是一样的，因此可以用AI去掉 :smiling_imp:
+        - 同一张照片有各种大小
+            - 应该是为了APP的小图预览（我下载了大照片）
+            - 有不同大小的照片，因此可以用AI增加分辨率
+            - 没有关注原始图像能否直接获取 :imp:
+        - 小照片没水印，大照片有水印
+            - 所有照片水印都是一样的，因此可以用AI去掉 :smiling_imp:
     - 不过既然吃了上家资源又要赚上家钱，就不坑上家了 :grimacing:
 
 ---
@@ -152,7 +140,7 @@ Folder: `from_fenxuekeji`
 
 - 配置 Mask R-CNN 运行环境 [`setup_MaskRCNN.sh`](./utils/setup_MaskRCNN.sh)
     - 除 [imgaug](https://github.com/aleju/imgaug), [pycocotools](https://github.com/cocodataset/cocoapi) 以外，其他为常用包
-    （来自于不做CV的无知 :mask: ）
+    （:beginner: 来自于不做CV的无知 :mask: ）
 - 测试 Mask R-CNN [`demo.ipynb`](https://github.com/matterport/Mask_RCNN/blob/master/samples/demo.ipynb)
 - 在单反相机照片和用API手动get的照片上测试 Mask R-CNN ( based on `demo.ipynb` )
     - 效果比想象中的好！:v:
@@ -286,6 +274,8 @@ Folder: `analysis`
 ### 结果评估
 
 ---
+
+### 细节
 
 #### DataFrame
 
