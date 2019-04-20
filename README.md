@@ -83,7 +83,7 @@
 - [x] [使用 Mask R-CNN 提取特征](#提取每个滑雪者的特征)
     - [ ] 海量照片高效提取
     - [ ] 高效结果存储
-    - [x] 结果可视化重现 `Show_Img`
+    - [x] 结果可视化重现 [`Show_Img`](./utils/Tools.py#L61)
 - [x] [卷积神经网络进一步提取特征](#用提取的信息构建数据库)
     - [x] ResNet50    提取滑雪者所在 Box
     - [ ] ResNet50    提取滑雪者所在 Mask :zzz:
@@ -365,7 +365,8 @@ Folder: `analysis`
     - Titan X Pascal
         - `A 12GB GPU can typically handle 2 images of 1024x1024px`
     - 调整 `batch_size`
-        - 2x GPU and 6x Image/GPU (700x467px, ~30%)
+        - 2x GPU
+        - 6x Image/GPU (700x467px, ~30%)
     - Tips [`tips_for_GPU.sh`](./utils/tips_for_GPU.sh)
 - 高效结果存储
     - 减少空间使用 :floppy_disk:
