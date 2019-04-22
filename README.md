@@ -70,7 +70,7 @@
 
 #### 特征提取
 - [x] [使用 Mask R-CNN 提取特征](#提取每个滑雪者的特征)
-    - [x] 海量照片高效提取 :link: :pushpin:
+    - [x] [海量照片高效提取](#大量图片高效处理) :pushpin:
     - [x] 高效结果存储
     - [x] 结果可视化重现 [`Show_Img`](./utils/Tools.py#L61)
 - [x] [卷积神经网络进一步提取特征](#用提取的信息构建数据库)
@@ -367,6 +367,9 @@ Folder: `analysis`
 ![](./imgs/DR.png)
 
 #### 大量图片高效处理
+
+Folder: `bulk_run`
+
 - 多线程
     - 多线程读取图片
     - 多线程格式化数据
@@ -387,6 +390,16 @@ Folder: `analysis`
         - 减少 90% 内存消耗
             - `df.info(memory_usage="deep")`
     - Save DataFrame per batch
+- 合并数据
+    - 保存为**csv** :ledger:
+        - 方便合并
+        - 支持分 chunk 读取
+    - 压缩
+        - 压缩比很高，1000x
+        - 因此压缩后的 csv 比 pkl 小多了
+        - 可能因为Masks的数据类型0/1
+- 跑完了万龙滑雪场 20190301 ~ 20190404 共 86573 张照片 :muscle:
+    - @MingxuanHu 爬来的数据 :clap:
 
 :pushpin:#TODO
 
