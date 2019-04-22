@@ -1,3 +1,8 @@
+* 2019.04.22
+    - Wanlong images processing (Finish)
+    - Merge Mask R-CNN results
+* 2019.04.20
+    - Wanlong images processing (Start)
 * 2019.04.19
     - Keep working on GPU
     - Switch to bulk pipeline
