@@ -36,8 +36,26 @@
         - 因此压缩后的 csv 比 pkl 小多了
         - 可能因为Masks的数据类型0/1
 
-### 数据处理
+### 数据分析
+
+#### 初步分析 Mask R-CNN 结果
+- Fig1 Score 分布
+- Fig2 每个照片的 Box 数量、位置分布
+- Fig3 Class 数量分布
+- Fig4 BoxSize 分布
+
+![](../imgs/Mask_RCNN_result_analysis_bulk.png)
+
+整体结果和周末一天的数据相比 [image](../imgs/Mask_RCNN_result_analysis.png)，只有 Fig2 有较大区别；在大量图片的结果中，可以明显看到多数图片中只有 1~2 个对象，猜测可能是因为周末雪场人多导致每张图片中有很多“抢镜头”的雪友。
+
+#### 时间分析
 
 :pushpin:#TODO
+
+## 提取每个滑雪者的特征并建立数据库
+
+
+
+
 
 <!--  -->

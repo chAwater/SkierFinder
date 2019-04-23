@@ -173,7 +173,7 @@ Folder: `analysis`
 1. 保存每个照片每个对象的 box, mask, class, scores 为 [**DataFrame**](#DataFrame)
     - 约30分钟就处理完了4000张照片 :zap:
     - 原始结果保存成 .pkl 文件大小约 6G，找到 ~17k 个 Box
-    - [更大量图片的高效处理](#大量图片高效处理) :twisted_rightwards_arrows:
+    - [更大量图片的高效处理](./bulk_run/README.md) :twisted_rightwards_arrows:
 2. [**初步分析**](#初步分析)所有图片的结果
     - Fig1 Score 分布
         - 整体：0.7~1.0
