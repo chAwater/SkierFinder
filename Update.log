@@ -1,5 +1,6 @@
 * 2019.04.23
     - Separate bulk run files
+    - Datetime analysis
 * 2019.04.22
     - Wanlong images processing (Finish)
     - Merge Mask R-CNN results
