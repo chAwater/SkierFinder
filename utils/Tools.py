@@ -50,7 +50,8 @@ CLASS_NAMES = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
 
 VIP_CLASS = ['person','skis','snowboard']
 
-IMAGE_SHAPE = (467, 700, 3)
+#IMAGE_SHAPE = (467, 700, 3)
+IMAGE_SHAPE = (667, 1000, 3)
 
 
 # ---
@@ -94,7 +95,7 @@ def Show_Img(obj, showBox=True, showMask=True, getArray=False):
         assert isinstance( obj['imgID'], (str, pd.Series) ), 'Unable to process:' + type(obj['imgID'])
 
     if not os.path.exists(imgFile):
-        assert None, 'Not such image!'
+        assert None, 'Not such image! ' + imgFile
 
     image  = skIR(imgFile)
 
@@ -176,7 +177,15 @@ def extInBoxPixels(obj, getMask=False, show=False):
 
     image = skIR(imgFile)
 
-    (x1, y1, x2, y2) = obj[['x1','y1','x2','y2']]
+    (x1, y1, x2, y2) = obj[['x1','y1','x2','y2']].map(int)
+
+    # Check image shape
+    if image.shape != IMAGE_SHAPE:
+        # Some are vertical image
+        image = np.swapaxes(image,0,1)
+        # Check again
+        if image.shape != IMAGE_SHAPE:
+            return None # Placehoder
 
     if not getMask:
         ext_Box = image[x1:x2, y1:y2, :]
