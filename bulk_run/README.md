@@ -58,13 +58,20 @@
 
 ![](../imgs/DateDA.png)
 
-
-:pushpin:#TODO
-
 ## 提取每个滑雪者的特征并建立数据库
 
+### 特征提取
+- 提取滑雪者的 InMask Pixels [`extInBoxPixels`](./utils/Tools.py#L150)
+- 固定提取出的 BoxSize 150x150 [`squareBox`](./utils/Tools.py#L212)
+- 卷积神经网络提取特征
+    - VGG19
+    - ResNet50
+    - DenseNet201
+- 保存提取出的特征向量
 
+### 数据库构建
 
+:pushpin:#TODO
 
 
 <!--  -->

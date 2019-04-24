@@ -1,3 +1,5 @@
+* 2019.04.24
+    - Extract feature from bulk masks
 * 2019.04.23
     - Separate bulk run files
     - Datetime analysis
