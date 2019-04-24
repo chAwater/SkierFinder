@@ -74,10 +74,9 @@
     - [x] 高效结果存储
     - [x] 结果可视化重现 [`Show_Img`](./utils/Tools.py#L61)
 - [x] [卷积神经网络进一步提取特征](#用提取的信息构建数据库)
-    - [x] ResNet50    提取滑雪者所在 Box
-    - [ ] ResNet50    提取滑雪者所在 Mask :zzz:
-    - [x] DenseNet201 提取滑雪者所在 Box
-    - [x] VGG19       提取滑雪者所在 Box
+    - [x] VGG19       提取滑雪者所在 Box/Mask
+    - [x] ResNet50    提取滑雪者所在 Box/Mask
+    - [x] DenseNet201 提取滑雪者所在 Box/Mask
 - [ ] 运用其他模型提取特征
     - [ ] 常规 CV 算法
     - [ ] 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
@@ -212,7 +211,7 @@ Folder: `analysis`
 1. 从原始图像中提取出 InBox Pixels
     - 函数： [`extInBoxPixels`](./utils/Tools.py#L150)
         - 提取 InBox  Pixels
-        - 提取 InMask Pixels :zzz:
+        - 提取 InMask Pixels
     - 只提取滑雪者，雪板暂时忽略
     - [BoxSize Distribution](./imgs/BoxSize.png)
 2. 固定提取出的 BoxSize
