@@ -1,6 +1,12 @@
 * 2019.04.26
-    - Test Query on random choice
     - Update Tools `Show_Img`
+    - Test Query on random choice
+> Not working when use vgg/resnet/densenet vector (w/o L1 norm) to query.
+> It seems body-shape/pose take dominant contribution than clothes/color.
+> It works better in small datasets, maybe because it can't find similar body-shape/pose with limited images.
+
+---
+
 * 2019.04.24
     - Extract feature from bulk masks
 * 2019.04.23
