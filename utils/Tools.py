@@ -50,7 +50,7 @@ CLASS_NAMES = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
 
 VIP_CLASS = ['person','skis','snowboard']
 
-#IMAGE_SHAPE = (467, 700, 3)
+# IMAGE_SHAPE = (467, 700, 3)
 IMAGE_SHAPE = (667, 1000, 3)
 
 
@@ -105,11 +105,11 @@ def Show_Img(obj, showBox=True, showMask=True, getArray=False):
     if isinstance(obj, str):
         return visualize.display_instances(
             image,
-            np.zeros((2,2)), # Placeholder
-            np.zeros((2,2)), # Placeholder
-            np.zeros((2,2)), # Placeholder
-            np.array(0),     # Placeholder
-            np.array(0),     # Placeholder
+            np.zeros((2,2)), # Placeholder, rois
+            np.zeros((2,2)), # Placeholder, masks
+            np.zeros((2,2)), # Placeholder, class_ids
+            np.array(0),     # Placeholder, CLASS_NAMES
+            np.array(0),     # Placeholder, scores
             figsize=(8,8),
             show_mask=False,
             show_bbox=False,
@@ -125,10 +125,13 @@ def Show_Img(obj, showBox=True, showMask=True, getArray=False):
             result['scores']    = np.array([obj['scores']])
             result['rois']      = np.array( obj[['x1','y1','x2','y2']].values)[np.newaxis, :]
 
-        result['masks'] = pd.Series(obj['masks']).apply( lambda row: list(map(int, list(row))) ).tolist()
-        result['masks'] = np.rollaxis(
-                np.array(result['masks']).reshape(-1, IMAGE_SHAPE[0], IMAGE_SHAPE[1]), 0, 3
-        ).astype(bool)
+        if showMask:
+            result['masks'] = pd.Series(obj['masks']).apply( lambda row: list(map(int, list(row))) ).tolist()
+            result['masks'] = np.rollaxis(
+                    np.array(result['masks']).reshape(-1, IMAGE_SHAPE[0], IMAGE_SHAPE[1]), 0, 3
+            ).astype(bool)
+        else:
+            result['masks'] = np.zeros((IMAGE_SHAPE[0], IMAGE_SHAPE[1], result['scores'].shape[0]))
 
         return visualize.display_instances(
             image,
@@ -169,7 +172,7 @@ def extInBoxPixels(obj, getMask=False, show=False):
     """
 
     assert isinstance( obj, pd.Series ), 'Input should be a Pandas Series.'
-    
+
     imgFile = obj['imgID']
 
     if not os.path.exists(imgFile):
@@ -273,5 +276,3 @@ def resize_tool(image_pil, width, height):
 
 
 # In[ ]:
-
-
