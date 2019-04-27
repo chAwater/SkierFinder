@@ -12,7 +12,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 # Tricks
 sns.set(style='ticks', context='talk', font_scale=1.15)
-get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 # In[2]:
@@ -24,7 +23,7 @@ import skimage.io
 from glob import glob
 
 # Root directory of the project
-ROOT_DIR = os.path.abspath("/mnt/gpfs/Users/chenhe/Playground/ski/Mask_RCNN/")
+ROOT_DIR = os.path.abspath("/path_to/Mask_RCNN/")
 
 # Import Mask RCNN
 sys.path.append(ROOT_DIR)  # To find local version of the library
