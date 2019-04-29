@@ -72,13 +72,15 @@
 - [x] [使用 Mask R-CNN 提取特征](#提取每个滑雪者的特征)
     - [x] [海量照片高效提取](./bulk_run) :pushpin:
     - [x] 高效结果存储
-    - [x] 结果可视化重现 [`Show_Img`](./utils/Tools.py#L61)
+    - [x] 结果可视化重现 [`Show_Img`](./utils/Tools.py#L62)
 - [x] [卷积神经网络进一步提取特征](#用提取的信息构建数据库)
-    - [x] VGG19       提取滑雪者所在 Box/Mask
-    - [x] ResNet50    提取滑雪者所在 Box/Mask
-    - [x] DenseNet201 提取滑雪者所在 Box/Mask
+    - [x] VGG19/ResNet50/DenseNet201 提取滑雪者所在 Box/Mask
+    - [ ] 比较提取的特征
+        - [x] 向量的余弦相似度（点乘）
+        - [ ] 其他更好的方法 :question:
+- [ ] 卷积神经网络区分单板双板
 - [ ] 运用其他模型提取特征
-    - [ ] 常规 CV 算法
+    - [ ] 常规 CV 算法 :zzz:
     - [ ] 姿态识别 [awesome](https://github.com/cbsudux/awesome-human-pose-estimation)
     - [ ] DeepFashion: [中文介绍](https://www.jianshu.com/p/3fceb8d84a2d)
     - [ ] etc.
@@ -87,7 +89,6 @@
 - [x] [基本分析](#初步分析)
 - [ ] 像素分析，特征工程，CV :zzz:
 - [x] [降维、聚类](#降维展示)
-- [ ] 卷积神经网络分类
 
 #### 图像索引
 - [ ] 构建数据库
@@ -209,19 +210,18 @@ Folder: `analysis`
 [`02.Extract_features_from_InBoxPixels.py`](analysis/02.Extract_features_from_InBoxPixels.py)
 
 1. 从原始图像中提取出 InBox Pixels
-    - 函数： [`extInBoxPixels`](./utils/Tools.py#L150)
-        - 提取 InBox  Pixels
-        - 提取 InMask Pixels
-    - 只提取滑雪者，雪板暂时忽略
+    - 函数： [`extInBoxPixels`](./utils/Tools.py#L154)
+        - 提取 InBox/InMask  Pixels
+        - 只提取滑雪者，雪板暂时忽略
     - [BoxSize Distribution](./imgs/BoxSize.png)
 2. 固定提取出的 BoxSize
-    - 函数 [`squareBox`](./utils/Tools.py#L212)
+    - 函数 [`squareBox`](./utils/Tools.py#L224)
     - 等比缩放，填充白色
     - shape = (150, 150, 3)
 3. 卷积神经网络进一步提取 InBox Pixels 的特征 :arrow_heading_down:
-    - 函数 [`extInBoxPixels`](./utils/Tools.py#L150)
+    - 函数 [`extInBoxPixels`](./utils/Tools.py#L154)
     - 模型：`VGG19` `ResNet50` `DenseNet201`
-    - 每个滑雪者转换为一个 2048 维向量，保存
+    - 每个滑雪者转换为一个多维向量，保存
     - 聚类时是否要做 Normalization :question:
     - References
         - [repo](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval) | [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/4) | [Issue](https://github.com/willard-yuan/flask-keras-cnn-image-retrieval/issues/24)
@@ -241,10 +241,15 @@ Folder: `analysis`
                 - 有的多个聚类属于同一个滑雪者
         - 需要进一步学习提高 :curly_loop: :end:
 5. 构建数据库
+    - 使用特征向量的余弦相似度（点乘）表示两个滑雪者特征的相似程度
+    - 效果不理想，感觉找出相似的滑雪者不完全是根据雪服（颜色），而是根据动作/姿态
+    - 使用 InBox 或 InMask、三种网络提取特征、是或否标准化，都没有很好的效果
+    - 需要进一步学习提高 :curly_loop: :leftwards_arrow_with_hook:
+6. 卷积神经网络区分单板双板 :arrow_heading_down:
 
 :pushpin:
 
-:leftwards_arrow_with_hook:
+
 
 - TODO outline **#TAG-FOLK**
     - 数据库设计
