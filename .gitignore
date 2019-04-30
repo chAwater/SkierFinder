@@ -1,6 +1,7 @@
 .DS_Store
 *.ai
 *.pkl
+*.npy
 *.csv
 *.csv.gz
 */.ipynb_checkpoints/*
