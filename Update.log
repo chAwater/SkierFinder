@@ -1,3 +1,6 @@
+* 2019.04.30
+    - Try to distinguish person w/o skis/snowboard by distance
+    - Failed because the distance distribution is not bimodal
 * 2019.04.29
     - Set a new goal
 * 2019.04.27
