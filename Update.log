@@ -1,3 +1,6 @@
+* 2019.05.05
+    - Start learning Mask_RCNN code
+    - Waiting for DeepFashion2
 * 2019.05.01
     - Use `cdict` instead of `dot` to measure the distance between vgg/resnet/densenet vector
     - A litter better result, but still not good
